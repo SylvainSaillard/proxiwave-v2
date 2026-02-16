@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="face-top" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2196D3"/>
+      <stop offset="100%" stop-color="#1565A0"/>
+    </linearGradient>
+    <linearGradient id="face-left" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1976D2"/>
+      <stop offset="100%" stop-color="#0D5A8E"/>
+    </linearGradient>
+    <linearGradient id="face-right" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E88C9"/>
+      <stop offset="100%" stop-color="#0B4F7A"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#64B5F6"/>
+      <stop offset="100%" stop-color="#90CAF9"/>
+    </linearGradient>
+  </defs>
+  <!-- Main cube body -->
+  <!-- Top face -->
+  <polygon points="256,80 420,170 256,260 92,170" fill="url(#face-top)"/>
+  <!-- Left face -->
+  <polygon points="92,170 256,260 256,440 92,350" fill="url(#face-left)"/>
+  <!-- Right face -->
+  <polygon points="256,260 420,170 420,350 256,440" fill="url(#face-right)"/>
+  <!-- Left leg cutout -->
+  <polygon points="130,310 200,270 200,440 130,400" fill="url(#accent)" opacity="0.7"/>
+  <!-- Right leg cutout -->
+  <polygon points="312,270 382,310 382,400 312,440" fill="url(#accent)" opacity="0.7"/>
+  <!-- Top diamond accent -->
+  <polygon points="256,140 290,170 256,200 222,170" fill="url(#accent)" opacity="0.8"/>
+</svg>

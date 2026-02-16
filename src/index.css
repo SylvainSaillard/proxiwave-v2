@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-gray-900 font-sans;
+    margin: 0;
+  }
+
+  ::selection {
+    @apply bg-pw-100 text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gray-900 text-white px-7 py-3.5 text-sm font-semibold transition-all duration-300 hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-gray-900 text-gray-900 px-7 py-3.5 text-sm font-semibold transition-all duration-300 hover:bg-gray-900 hover:text-white hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  .bento-block {
+    @apply rounded-bento overflow-hidden transition-all duration-300;
+  }
+}
