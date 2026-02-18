@@ -40,16 +40,29 @@ export interface Document {
   size: string;
 }
 
+export interface Subtask {
+  id: string;
+  title: string;
+  done: boolean;
+}
+
 export interface Task {
   id: string;
   title: string;
+  description: string;
   status: 'validated' | 'in_progress' | 'delivered';
+  priority: 'low' | 'medium' | 'high';
   progress: number;
   startWeek: number;
   durationWeeks: number;
   assignee: string;
   assigneeInitials: string;
   assigneeColor: string;
+  sprint: string;
+  startDate: string;
+  endDate: string;
+  subtasks: Subtask[];
+  tags: string[];
 }
 
 export interface ProjectMessage {
@@ -170,15 +183,119 @@ export const projectDetails: Record<string, ProjectDetail> = {
       { id: 'doc4', name: 'PV de recette Sprint 2.pdf', type: 'pdf', date: '31 Jan.', size: '890 Ko' },
     ],
     tasks: [
-      { id: 't1', title: 'Analyse des process', status: 'delivered', progress: 100, startWeek: 1, durationWeeks: 1, assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500' },
-      { id: 't2', title: 'Connexion données', status: 'delivered', progress: 100, startWeek: 1, durationWeeks: 2, assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400' },
-      { id: 't3', title: 'Template rapport v1', status: 'delivered', progress: 100, startWeek: 2, durationWeeks: 2, assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500' },
-      { id: 't4', title: 'Export multi-formats', status: 'delivered', progress: 100, startWeek: 3, durationWeeks: 2, assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400' },
-      { id: 't5', title: 'Planification auto', status: 'delivered', progress: 100, startWeek: 4, durationWeeks: 1, assignee: 'Jean P.', assigneeInitials: 'JP', assigneeColor: 'bg-pw-300' },
-      { id: 't6', title: 'Résumé IA rapports', status: 'delivered', progress: 100, startWeek: 5, durationWeeks: 1, assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500' },
-      { id: 't7', title: 'Notification Slack', status: 'in_progress', progress: 60, startWeek: 5, durationWeeks: 2, assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400' },
-      { id: 't8', title: 'Dashboard récap', status: 'in_progress', progress: 35, startWeek: 6, durationWeeks: 2, assignee: 'Jean P.', assigneeInitials: 'JP', assigneeColor: 'bg-pw-300' },
-      { id: 't9', title: 'Déploiement final', status: 'validated', progress: 0, startWeek: 7, durationWeeks: 1, assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500' },
+      {
+        id: 't1', title: 'Analyse des process', description: 'Cartographie complète des processus de reporting existants : flux de données, outils utilisés, points de friction et opportunités d\'automatisation.',
+        status: 'delivered', priority: 'high', progress: 100, startWeek: 1, durationWeeks: 1,
+        assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500',
+        sprint: 'Sprint 1', startDate: '2 Jan.', endDate: '8 Jan.',
+        subtasks: [
+          { id: 'st1', title: 'Interviews équipe reporting', done: true },
+          { id: 'st2', title: 'Mapping des flux de données', done: true },
+          { id: 'st3', title: 'Rapport d\'audit', done: true },
+        ],
+        tags: ['Audit', 'Stratégie'],
+      },
+      {
+        id: 't2', title: 'Connexion données', description: 'Mise en place des connecteurs API vers les sources de données (CRM, ERP, Google Sheets) avec authentification sécurisée et synchronisation planifiée.',
+        status: 'delivered', priority: 'high', progress: 100, startWeek: 1, durationWeeks: 2,
+        assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400',
+        sprint: 'Sprint 1', startDate: '2 Jan.', endDate: '16 Jan.',
+        subtasks: [
+          { id: 'st4', title: 'Connecteur CRM Salesforce', done: true },
+          { id: 'st5', title: 'Connecteur ERP interne', done: true },
+          { id: 'st6', title: 'Synchro Google Sheets', done: true },
+          { id: 'st7', title: 'Tests d\'intégration', done: true },
+        ],
+        tags: ['Backend', 'API'],
+      },
+      {
+        id: 't3', title: 'Template rapport v1', description: 'Création du premier template de rapport automatisé avec mise en page professionnelle, graphiques dynamiques et insertion automatique des KPIs.',
+        status: 'delivered', priority: 'medium', progress: 100, startWeek: 2, durationWeeks: 2,
+        assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500',
+        sprint: 'Sprint 1', startDate: '9 Jan.', endDate: '22 Jan.',
+        subtasks: [
+          { id: 'st8', title: 'Maquette du template', done: true },
+          { id: 'st9', title: 'Intégration des graphiques', done: true },
+          { id: 'st10', title: 'Validation client', done: true },
+        ],
+        tags: ['Design', 'Frontend'],
+      },
+      {
+        id: 't4', title: 'Export multi-formats', description: 'Développement du système d\'export en PDF, Excel et PowerPoint avec options de personnalisation (logo, couleurs, sections).',
+        status: 'delivered', priority: 'medium', progress: 100, startWeek: 3, durationWeeks: 2,
+        assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400',
+        sprint: 'Sprint 2', startDate: '16 Jan.', endDate: '29 Jan.',
+        subtasks: [
+          { id: 'st11', title: 'Export PDF', done: true },
+          { id: 'st12', title: 'Export Excel', done: true },
+          { id: 'st13', title: 'Export PowerPoint', done: true },
+          { id: 'st14', title: 'Options de personnalisation', done: true },
+        ],
+        tags: ['Backend', 'Export'],
+      },
+      {
+        id: 't5', title: 'Planification auto', description: 'Mise en place de la planification automatique des rapports avec cron jobs, gestion des fuseaux horaires et notifications de livraison.',
+        status: 'delivered', priority: 'low', progress: 100, startWeek: 4, durationWeeks: 1,
+        assignee: 'Jean P.', assigneeInitials: 'JP', assigneeColor: 'bg-pw-300',
+        sprint: 'Sprint 2', startDate: '23 Jan.', endDate: '29 Jan.',
+        subtasks: [
+          { id: 'st15', title: 'Scheduler cron', done: true },
+          { id: 'st16', title: 'Gestion fuseaux horaires', done: true },
+          { id: 'st17', title: 'Email de confirmation', done: true },
+        ],
+        tags: ['Backend', 'Automation'],
+      },
+      {
+        id: 't6', title: 'Résumé IA rapports', description: 'Intégration d\'un modèle IA pour générer automatiquement un résumé exécutif de chaque rapport avec les points clés et recommandations.',
+        status: 'delivered', priority: 'high', progress: 100, startWeek: 5, durationWeeks: 1,
+        assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500',
+        sprint: 'Sprint 3', startDate: '1 Fév.', endDate: '7 Fév.',
+        subtasks: [
+          { id: 'st18', title: 'Prompt engineering', done: true },
+          { id: 'st19', title: 'Intégration API OpenAI', done: true },
+          { id: 'st20', title: 'Tests de qualité', done: true },
+        ],
+        tags: ['IA', 'NLP'],
+      },
+      {
+        id: 't7', title: 'Notification Slack', description: 'Développement du bot Slack pour notifier l\'équipe à chaque nouveau rapport généré, avec preview intégrée et bouton d\'accès direct.',
+        status: 'in_progress', priority: 'medium', progress: 60, startWeek: 5, durationWeeks: 2,
+        assignee: 'Marc R.', assigneeInitials: 'MR', assigneeColor: 'bg-sky-400',
+        sprint: 'Sprint 3', startDate: '1 Fév.', endDate: '14 Fév.',
+        subtasks: [
+          { id: 'st21', title: 'Bot Slack setup', done: true },
+          { id: 'st22', title: 'Template de notification', done: true },
+          { id: 'st23', title: 'Preview du rapport dans Slack', done: false },
+          { id: 'st24', title: 'Bouton d\'accès direct', done: false },
+        ],
+        tags: ['Intégration', 'Slack'],
+      },
+      {
+        id: 't8', title: 'Dashboard récap', description: 'Création d\'un dashboard récapitulatif mensuel avec vue d\'ensemble des rapports générés, tendances et métriques clés.',
+        status: 'in_progress', priority: 'medium', progress: 35, startWeek: 6, durationWeeks: 2,
+        assignee: 'Jean P.', assigneeInitials: 'JP', assigneeColor: 'bg-pw-300',
+        sprint: 'Sprint 3', startDate: '8 Fév.', endDate: '21 Fév.',
+        subtasks: [
+          { id: 'st25', title: 'Wireframes dashboard', done: true },
+          { id: 'st26', title: 'Composants graphiques', done: false },
+          { id: 'st27', title: 'Filtres et interactions', done: false },
+          { id: 'st28', title: 'Responsive mobile', done: false },
+        ],
+        tags: ['Frontend', 'Dashboard'],
+      },
+      {
+        id: 't9', title: 'Déploiement final', description: 'Déploiement en production avec migration des données, configuration DNS, monitoring et documentation de mise en service.',
+        status: 'validated', priority: 'high', progress: 0, startWeek: 7, durationWeeks: 1,
+        assignee: 'Sophie L.', assigneeInitials: 'SL', assigneeColor: 'bg-pw-500',
+        sprint: 'Sprint 3', startDate: '15 Fév.', endDate: '21 Fév.',
+        subtasks: [
+          { id: 'st29', title: 'Configuration production', done: false },
+          { id: 'st30', title: 'Migration données', done: false },
+          { id: 'st31', title: 'Tests de charge', done: false },
+          { id: 'st32', title: 'Documentation', done: false },
+        ],
+        tags: ['DevOps', 'Production'],
+      },
     ],
     projectMessages: [
       { id: 'pm1', sender: 'Marie Dupont', senderInitials: 'MD', senderColor: 'bg-pw-400', text: 'Les rapports automatisés fonctionnent très bien, merci !', date: '10 Fév.', isClient: true },
@@ -250,13 +367,91 @@ export const projectDetails: Record<string, ProjectDetail> = {
       { id: 'doc6', name: 'Arborescence conversations.doc', type: 'doc', date: '9 Jan.', size: '340 Ko' },
     ],
     tasks: [
-      { id: 't10', title: 'Base de connaissances', status: 'delivered', progress: 100, startWeek: 1, durationWeeks: 2, assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400' },
-      { id: 't11', title: 'Moteur réponses IA', status: 'delivered', progress: 100, startWeek: 1, durationWeeks: 2, assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300' },
-      { id: 't12', title: 'Interface chat', status: 'in_progress', progress: 55, startWeek: 2, durationWeeks: 2, assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400' },
-      { id: 't13', title: 'Tests utilisateurs', status: 'in_progress', progress: 20, startWeek: 3, durationWeeks: 1, assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300' },
-      { id: 't14', title: 'Escalade humaine', status: 'validated', progress: 0, startWeek: 4, durationWeeks: 2, assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400' },
-      { id: 't15', title: 'Analytics conversations', status: 'validated', progress: 0, startWeek: 4, durationWeeks: 2, assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300' },
-      { id: 't16', title: 'Déploiement production', status: 'validated', progress: 0, startWeek: 6, durationWeeks: 1, assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400' },
+      {
+        id: 't10', title: 'Base de connaissances', description: 'Construction de la base de connaissances à partir de la documentation interne, FAQ existantes et tickets de support passés.',
+        status: 'delivered', priority: 'high', progress: 100, startWeek: 1, durationWeeks: 2,
+        assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400',
+        sprint: 'Sprint 1', startDate: '5 Jan.', endDate: '19 Jan.',
+        subtasks: [
+          { id: 'st33', title: 'Import documentation', done: true },
+          { id: 'st34', title: 'Indexation vectorielle', done: true },
+          { id: 'st35', title: 'Tests de recherche', done: true },
+        ],
+        tags: ['IA', 'Data'],
+      },
+      {
+        id: 't11', title: 'Moteur réponses IA', description: 'Développement du moteur de réponses basé sur RAG avec gestion du contexte conversationnel et des réponses structurées.',
+        status: 'delivered', priority: 'high', progress: 100, startWeek: 1, durationWeeks: 2,
+        assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300',
+        sprint: 'Sprint 1', startDate: '5 Jan.', endDate: '19 Jan.',
+        subtasks: [
+          { id: 'st36', title: 'Pipeline RAG', done: true },
+          { id: 'st37', title: 'Gestion du contexte', done: true },
+          { id: 'st38', title: 'Tests qualité réponses', done: true },
+        ],
+        tags: ['IA', 'Backend'],
+      },
+      {
+        id: 't12', title: 'Interface chat', description: 'Interface de chat responsive avec bulles de conversation, indicateur de frappe, suggestions de questions et historique.',
+        status: 'in_progress', priority: 'medium', progress: 55, startWeek: 2, durationWeeks: 2,
+        assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400',
+        sprint: 'Sprint 1', startDate: '12 Jan.', endDate: '26 Jan.',
+        subtasks: [
+          { id: 'st39', title: 'Composant chat', done: true },
+          { id: 'st40', title: 'Suggestions de questions', done: true },
+          { id: 'st41', title: 'Historique conversations', done: false },
+          { id: 'st42', title: 'Responsive mobile', done: false },
+        ],
+        tags: ['Frontend', 'UX'],
+      },
+      {
+        id: 't13', title: 'Tests utilisateurs', description: 'Sessions de tests avec 10 utilisateurs pilotes pour valider la pertinence des réponses et l\'ergonomie de l\'interface.',
+        status: 'in_progress', priority: 'medium', progress: 20, startWeek: 3, durationWeeks: 1,
+        assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300',
+        sprint: 'Sprint 1', startDate: '19 Jan.', endDate: '26 Jan.',
+        subtasks: [
+          { id: 'st43', title: 'Recrutement testeurs', done: true },
+          { id: 'st44', title: 'Sessions de test', done: false },
+          { id: 'st45', title: 'Rapport de feedback', done: false },
+        ],
+        tags: ['QA', 'UX Research'],
+      },
+      {
+        id: 't14', title: 'Escalade humaine', description: 'Système d\'escalade automatique vers un agent humain quand le chatbot ne peut pas répondre, avec transfert de contexte.',
+        status: 'validated', priority: 'high', progress: 0, startWeek: 4, durationWeeks: 2,
+        assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400',
+        sprint: 'Sprint 2', startDate: '26 Jan.', endDate: '9 Fév.',
+        subtasks: [
+          { id: 'st46', title: 'Détection de frustration', done: false },
+          { id: 'st47', title: 'Transfert de contexte', done: false },
+          { id: 'st48', title: 'Interface agent', done: false },
+        ],
+        tags: ['Backend', 'IA'],
+      },
+      {
+        id: 't15', title: 'Analytics conversations', description: 'Dashboard d\'analytics avec métriques de satisfaction, taux de résolution, sujets fréquents et tendances.',
+        status: 'validated', priority: 'low', progress: 0, startWeek: 4, durationWeeks: 2,
+        assignee: 'Luc B.', assigneeInitials: 'LB', assigneeColor: 'bg-sky-300',
+        sprint: 'Sprint 2', startDate: '26 Jan.', endDate: '9 Fév.',
+        subtasks: [
+          { id: 'st49', title: 'Collecte de métriques', done: false },
+          { id: 'st50', title: 'Dashboard analytics', done: false },
+          { id: 'st51', title: 'Exports de données', done: false },
+        ],
+        tags: ['Analytics', 'Frontend'],
+      },
+      {
+        id: 't16', title: 'Déploiement production', description: 'Déploiement final en production avec configuration du domaine, SSL, monitoring et documentation utilisateur.',
+        status: 'validated', priority: 'high', progress: 0, startWeek: 6, durationWeeks: 1,
+        assignee: 'Anna C.', assigneeInitials: 'AC', assigneeColor: 'bg-pw-400',
+        sprint: 'Sprint 2', startDate: '9 Fév.', endDate: '16 Fév.',
+        subtasks: [
+          { id: 'st52', title: 'Setup production', done: false },
+          { id: 'st53', title: 'Documentation', done: false },
+          { id: 'st54', title: 'Formation équipe', done: false },
+        ],
+        tags: ['DevOps', 'Production'],
+      },
     ],
     projectMessages: [
       { id: 'pm7', sender: 'Luc Bernard', senderInitials: 'LB', senderColor: 'bg-sky-300', text: 'Le moteur de réponses est vraiment impressionnant.', date: '16 Jan.', isClient: true },

@@ -14,10 +14,17 @@ import {
   Receipt,
   FileText,
   Download,
+  User,
+  Calendar,
+  Tag,
+  ChevronRight,
+  AlertTriangle,
+  ArrowUpCircle,
+  MinusCircle,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { getProjectDetail } from './projectDetailData';
-import type { Sprint, Idea, Task, ProjectMessage } from './projectDetailData';
+import type { Sprint, Idea, Task, ProjectMessage, Subtask } from './projectDetailData';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 
@@ -116,17 +123,200 @@ function KpiTab({ value, label, icon: Icon, active, accent, iconColor, onClick }
   );
 }
 
+/* ── Priority helpers ── */
+
+function priorityConfig(priority: string) {
+  const map: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
+    high:   { icon: ArrowUpCircle, color: 'text-red-500',    bg: 'bg-red-50',    label: 'Haute' },
+    medium: { icon: MinusCircle,   color: 'text-amber-500',  bg: 'bg-amber-50',  label: 'Moyenne' },
+    low:    { icon: MinusCircle,   color: 'text-green-500',  bg: 'bg-green-50',  label: 'Basse' },
+  };
+  return map[priority] || map.medium;
+}
+
+/* ── Task Detail Panel ── */
+
+function TaskDetailPanel({ task, onClose }: { task: Task; onClose: () => void }) {
+  const prio = priorityConfig(task.priority);
+  const PrioIcon = prio.icon;
+  const doneCount = task.subtasks.filter((s) => s.done).length;
+  const totalSubs = task.subtasks.length;
+  const subtaskPercent = totalSubs > 0 ? Math.round((doneCount / totalSubs) * 100) : 0;
+
+  return (
+    <div
+      className="overflow-hidden transition-all duration-300 ease-out"
+      style={{ animation: 'slideDown 0.3s ease-out' }}
+    >
+      <div className="mx-2 mb-3 rounded-2xl bg-white border-2 border-pw-100 shadow-lg shadow-pw-500/5 p-5">
+        {/* Header row */}
+        <div className="flex items-start justify-between gap-4 mb-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="text-base font-bold text-gray-900">{task.title}</h3>
+              {statusBadge(task.status)}
+            </div>
+            <p className="text-sm text-gray-500 leading-relaxed">{task.description}</p>
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); onClose(); }}
+            className="shrink-0 h-8 w-8 rounded-lg bg-warm-50 hover:bg-warm-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Fermer le détail"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Info grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+          {/* Assignee */}
+          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+            <div className={cn('h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0', task.assigneeColor)}>
+              {task.assigneeInitials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Assigné</p>
+              <p className="text-xs font-bold text-gray-900 truncate">{task.assignee}</p>
+            </div>
+          </div>
+
+          {/* Sprint */}
+          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-full bg-pw-50 flex items-center justify-center shrink-0">
+              <Flag className="h-4 w-4 text-pw-500" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Sprint</p>
+              <p className="text-xs font-bold text-gray-900 truncate">{task.sprint}</p>
+            </div>
+          </div>
+
+          {/* Dates */}
+          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
+              <Calendar className="h-4 w-4 text-sky-500" />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Période</p>
+              <p className="text-xs font-bold text-gray-900 truncate">{task.startDate} → {task.endDate}</p>
+            </div>
+          </div>
+
+          {/* Priority */}
+          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+            <div className={cn('h-8 w-8 rounded-full flex items-center justify-center shrink-0', prio.bg)}>
+              <PrioIcon className={cn('h-4 w-4', prio.color)} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Priorité</p>
+              <p className="text-xs font-bold text-gray-900">{prio.label}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Subtasks + Tags row */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Subtasks */}
+          <div className="flex-1 rounded-xl bg-warm-50 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs font-bold text-gray-900">Sous-tâches</p>
+              <span className="text-[10px] font-bold text-gray-400">{doneCount}/{totalSubs}</span>
+            </div>
+            {/* Mini progress bar */}
+            <div className="h-1.5 w-full rounded-full bg-warm-200 overflow-hidden mb-3">
+              <div
+                className="h-full rounded-full bg-pw-500 transition-all duration-500"
+                style={{ width: `${subtaskPercent}%` }}
+              />
+            </div>
+            <div className="space-y-2">
+              {task.subtasks.map((sub) => (
+                <div key={sub.id} className="flex items-center gap-2">
+                  <div className={cn(
+                    'h-4 w-4 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors',
+                    sub.done
+                      ? 'bg-pw-500 border-pw-500'
+                      : 'border-warm-300 bg-white'
+                  )}>
+                    {sub.done && (
+                      <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                  <span className={cn(
+                    'text-xs',
+                    sub.done ? 'text-gray-400 line-through' : 'text-gray-700'
+                  )}>
+                    {sub.title}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tags + Progress overview */}
+          <div className="sm:w-48 flex flex-col gap-3">
+            {/* Tags */}
+            <div className="rounded-xl bg-warm-50 p-4">
+              <p className="text-xs font-bold text-gray-900 mb-2">Tags</p>
+              <div className="flex flex-wrap gap-1.5">
+                {task.tags.map((tag) => (
+                  <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-pw-50 border border-pw-100 px-2.5 py-0.5 text-[10px] font-semibold text-pw-600">
+                    <Tag className="h-2.5 w-2.5" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Progress */}
+            <div className="rounded-xl bg-warm-50 p-4 flex-1">
+              <p className="text-xs font-bold text-gray-900 mb-3">Avancement</p>
+              <div className="flex items-center justify-center">
+                <div className="relative">
+                  <svg width={72} height={72} className="-rotate-90">
+                    <circle cx={36} cy={36} r={28} fill="none" stroke="#ECEAE4" strokeWidth={6} />
+                    <circle
+                      cx={36} cy={36} r={28} fill="none"
+                      stroke={task.status === 'delivered' ? '#4ade80' : '#1976D2'}
+                      strokeWidth={6}
+                      strokeDasharray={2 * Math.PI * 28}
+                      strokeDashoffset={2 * Math.PI * 28 - (task.progress / 100) * 2 * Math.PI * 28}
+                      strokeLinecap="round"
+                      className="transition-all duration-700"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm font-extrabold text-gray-900">{task.progress}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Timeline Panel (default — Tasks) ── */
 
 function TaskTimeline({ tasks, t }: { tasks: Task[]; t: (k: string) => string }) {
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const maxWeek = Math.max(...tasks.map((tk) => tk.startWeek + tk.durationWeeks));
   const weeks = Array.from({ length: maxWeek }, (_, i) => i + 1);
+
+  const handleTaskClick = (taskId: string) => {
+    setSelectedTaskId(selectedTaskId === taskId ? null : taskId);
+  };
 
   return (
     <div>
       <div className="flex items-center gap-2 mb-5">
         <Zap className="h-5 w-5 text-pw-500" />
         <h2 className="text-lg font-bold text-gray-900">{t('project.tab_tasks')}</h2>
+        <span className="text-xs text-gray-400 ml-2">Cliquez sur une tâche pour voir le détail</span>
       </div>
 
       <div className="rounded-bento bg-warm-50 p-5 overflow-x-auto">
@@ -141,10 +331,11 @@ function TaskTimeline({ tasks, t }: { tasks: Task[]; t: (k: string) => string })
         </div>
 
         {/* Task rows */}
-        <div className="space-y-2" style={{ minWidth: `${maxWeek * 100}px` }}>
+        <div className="space-y-1" style={{ minWidth: `${maxWeek * 100}px` }}>
           {tasks.map((task) => {
             const leftPercent = ((task.startWeek - 1) / maxWeek) * 100;
             const widthPercent = (task.durationWeeks / maxWeek) * 100;
+            const isSelected = selectedTaskId === task.id;
 
             const barColor =
               task.status === 'delivered'
@@ -161,39 +352,68 @@ function TaskTimeline({ tasks, t }: { tasks: Task[]; t: (k: string) => string })
                 : 'bg-warm-100';
 
             return (
-              <div key={task.id} className="flex items-center gap-0">
-                {/* Label */}
-                <div className="w-44 shrink-0 flex items-center gap-2 pr-3">
-                  <div className={cn('h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold text-white shrink-0', task.assigneeColor)}>
-                    {task.assigneeInitials}
+              <div key={task.id}>
+                <div
+                  onClick={() => handleTaskClick(task.id)}
+                  className={cn(
+                    'flex items-center gap-0 rounded-xl px-2 py-1 cursor-pointer transition-all duration-200',
+                    isSelected
+                      ? 'bg-white shadow-sm ring-1 ring-pw-200'
+                      : 'hover:bg-white/60'
+                  )}
+                >
+                  {/* Label */}
+                  <div className="w-44 shrink-0 flex items-center gap-2 pr-3">
+                    <ChevronRight className={cn(
+                      'h-3 w-3 text-gray-400 shrink-0 transition-transform duration-200',
+                      isSelected && 'rotate-90 text-pw-500'
+                    )} />
+                    <div className={cn('h-6 w-6 rounded-full flex items-center justify-center text-[8px] font-bold text-white shrink-0', task.assigneeColor)}>
+                      {task.assigneeInitials}
+                    </div>
+                    <div className="min-w-0">
+                      <p className={cn(
+                        'text-xs font-semibold truncate transition-colors',
+                        isSelected ? 'text-pw-600' : 'text-gray-900'
+                      )}>{task.title}</p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-xs font-semibold text-gray-900 truncate">{task.title}</p>
-                  </div>
-                </div>
 
-                {/* Gantt bar */}
-                <div className="flex-1 relative h-8">
-                  <div
-                    className={cn('absolute top-1 h-6 rounded-full flex items-center overflow-hidden', barBg)}
-                    style={{ left: `${leftPercent}%`, width: `${widthPercent}%` }}
-                  >
+                  {/* Gantt bar */}
+                  <div className="flex-1 relative h-8">
                     <div
-                      className={cn('h-full rounded-full transition-all duration-700', barColor)}
-                      style={{ width: `${task.progress}%` }}
-                    />
-                    {/* Progress text + icon */}
-                    <div className="absolute inset-0 flex items-center justify-end pr-2 gap-1">
-                      {task.status === 'delivered' ? (
-                        <CheckCircle2 className="h-3.5 w-3.5 text-green-700" />
-                      ) : task.status === 'in_progress' ? (
-                        <span className="text-[10px] font-bold text-pw-700">{task.progress}%</span>
-                      ) : (
-                        <Clock className="h-3 w-3 text-gray-400" />
+                      className={cn(
+                        'absolute top-1 h-6 rounded-full flex items-center overflow-hidden transition-all duration-200',
+                        barBg,
+                        isSelected && 'ring-1 ring-pw-300'
                       )}
+                      style={{ left: `${leftPercent}%`, width: `${widthPercent}%` }}
+                    >
+                      <div
+                        className={cn('h-full rounded-full transition-all duration-700', barColor)}
+                        style={{ width: `${task.progress}%` }}
+                      />
+                      {/* Progress text + icon */}
+                      <div className="absolute inset-0 flex items-center justify-end pr-2 gap-1">
+                        {task.status === 'delivered' ? (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-green-700" />
+                        ) : task.status === 'in_progress' ? (
+                          <span className="text-[10px] font-bold text-pw-700">{task.progress}%</span>
+                        ) : (
+                          <Clock className="h-3 w-3 text-gray-400" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Expanded detail panel */}
+                {isSelected && (
+                  <TaskDetailPanel
+                    task={task}
+                    onClose={() => setSelectedTaskId(null)}
+                  />
+                )}
               </div>
             );
           })}
