@@ -112,6 +112,38 @@ export const projects: Project[] = [
   },
 ];
 
+export interface GlobalDocument {
+  id: string;
+  name: string;
+  type: 'pdf' | 'figma' | 'sheet' | 'doc' | 'image';
+  project: string;
+  projectId: string;
+  date: string;
+  size: string;
+  author: string;
+  authorInitials: string;
+  authorColor: string;
+  category: 'deliverable' | 'spec' | 'design' | 'report' | 'invoice';
+  starred: boolean;
+}
+
+export const globalDocuments: GlobalDocument[] = [
+  { id: 'gd1', name: 'Cahier des charges v2.pdf', type: 'pdf', project: 'Automatisation Reporting', projectId: 'p1', date: '3 Jan. 2026', size: '2.4 Mo', author: 'Sophie L.', authorInitials: 'SL', authorColor: 'bg-pw-500', category: 'spec', starred: true },
+  { id: 'gd2', name: 'Maquettes Figma', type: 'figma', project: 'Automatisation Reporting', projectId: 'p1', date: '8 Jan. 2026', size: 'Lien', author: 'Marc R.', authorInitials: 'MR', authorColor: 'bg-sky-400', category: 'design', starred: false },
+  { id: 'gd3', name: 'Suivi budget.xlsx', type: 'sheet', project: 'Automatisation Reporting', projectId: 'p1', date: '20 Jan. 2026', size: '156 Ko', author: 'Jean P.', authorInitials: 'JP', authorColor: 'bg-pw-300', category: 'report', starred: false },
+  { id: 'gd4', name: 'PV de recette Sprint 2.pdf', type: 'pdf', project: 'Automatisation Reporting', projectId: 'p1', date: '31 Jan. 2026', size: '890 Ko', author: 'Sophie L.', authorInitials: 'SL', authorColor: 'bg-pw-500', category: 'deliverable', starred: true },
+  { id: 'gd5', name: 'Brief chatbot.pdf', type: 'pdf', project: 'Chatbot Interne', projectId: 'p2', date: '4 Jan. 2026', size: '1.8 Mo', author: 'Anna C.', authorInitials: 'AC', authorColor: 'bg-pw-400', category: 'spec', starred: false },
+  { id: 'gd6', name: 'Arborescence conversations.doc', type: 'doc', project: 'Chatbot Interne', projectId: 'p2', date: '9 Jan. 2026', size: '340 Ko', author: 'Luc B.', authorInitials: 'LB', authorColor: 'bg-sky-300', category: 'spec', starred: false },
+  { id: 'gd7', name: 'Rapport livraison Sprint 1.pdf', type: 'pdf', project: 'Automatisation Reporting', projectId: 'p1', date: '16 Jan. 2026', size: '1.2 Mo', author: 'Sophie L.', authorInitials: 'SL', authorColor: 'bg-pw-500', category: 'deliverable', starred: false },
+  { id: 'gd8', name: 'Facture Sprint 1.pdf', type: 'pdf', project: 'Automatisation Reporting', projectId: 'p1', date: '17 Jan. 2026', size: '320 Ko', author: 'Jean P.', authorInitials: 'JP', authorColor: 'bg-pw-300', category: 'invoice', starred: false },
+  { id: 'gd9', name: 'Wireframes chatbot.figma', type: 'figma', project: 'Chatbot Interne', projectId: 'p2', date: '12 Jan. 2026', size: 'Lien', author: 'Anna C.', authorInitials: 'AC', authorColor: 'bg-pw-400', category: 'design', starred: true },
+  { id: 'gd10', name: 'Dashboard specs.pdf', type: 'pdf', project: 'Dashboard Médical', projectId: 'p3', date: '11 Jan. 2026', size: '3.1 Mo', author: 'Pierre T.', authorInitials: 'PT', authorColor: 'bg-pw-600', category: 'spec', starred: false },
+  { id: 'gd11', name: 'Maquettes dashboard.figma', type: 'figma', project: 'Dashboard Médical', projectId: 'p3', date: '14 Jan. 2026', size: 'Lien', author: 'Nadia V.', authorInitials: 'NV', authorColor: 'bg-sky-400', category: 'design', starred: false },
+  { id: 'gd12', name: 'Rapport avancement Q1.xlsx', type: 'sheet', project: 'Qualification Leads IA', projectId: 'p4', date: '18 Jan. 2026', size: '420 Ko', author: 'Marc R.', authorInitials: 'MR', authorColor: 'bg-pw-500', category: 'report', starred: false },
+  { id: 'gd13', name: 'Facture Sprint 2.pdf', type: 'pdf', project: 'Automatisation Reporting', projectId: 'p1', date: '1 Fév. 2026', size: '310 Ko', author: 'Jean P.', authorInitials: 'JP', authorColor: 'bg-pw-300', category: 'invoice', starred: false },
+  { id: 'gd14', name: 'Capture écran prototype.png', type: 'image', project: 'Chatbot Interne', projectId: 'p2', date: '15 Jan. 2026', size: '2.8 Mo', author: 'Anna C.', authorInitials: 'AC', authorColor: 'bg-pw-400', category: 'design', starred: false },
+];
+
 export const messages: Message[] = [
   {
     id: 'm1',

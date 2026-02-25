@@ -1,11 +1,40 @@
 {
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "permissions": {
     "allow": [
       "Bash(npx tsc:*)",
-      "Bash(npx vite build)"
+      "Bash(npx vite build)",
+      "Bash(uv:*)",
+      "Bash(curl:*)",
+      "Bash(sh)",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(export PATH=\"$HOME/.local/bin:$HOME/.local/share/uv/tools/specify-cli/bin:$PATH\")",
+      "Bash(specify init:*)",
+      "Bash(/Users/sylvain/.local/bin/specify init:*)",
+      "Bash(cd:*)",
+      "Bash(cd \"/Users/sylvain/Proxiwave v2.1\" && .specify/scripts/bash/update-agent-context.sh claude 2>&1)",
+      "Bash(git:*)",
+      "Bash(which pnpm:*)",
+      "Bash(cd /Users/sylvain && npx create-next-app@latest proxiwave-v2 --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-pnpm --no-turbopack 2>&1)",
+      "Bash(cd /Users/sylvain && npx create-next-app@latest proxiwave-v2 --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-pnpm --no-turbopack --no-react-compiler 2>&1)",
+      "Bash(cd /Users/sylvain/proxiwave-v2 && pnpm add @supabase/supabase-js @supabase/ssr next-intl framer-motion lucide-react resend @react-email/components @react-email/html @react-email/text @react-email/section @react-email/heading clsx tailwind-merge 2>&1)",
+      "Bash(cd /Users/sylvain/proxiwave-v2 && supabase init 2>&1)",
+      "Bash(supabase link:*)",
+      "Bash(head:*)",
+      "Bash(supabase db:*)",
+      "Bash(PGPASSWORD=jAsaFXDcz7Kj47dj supabase db:*)",
+      "Bash(grep:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\(''mcpServers'', {}\\), indent=2\\)\\)\")",
+      "Bash(echo JSON valide:*)",
+      "Bash(claude mcp:*)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__list_migrations",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__generate_typescript_types",
+      "mcp__supabase__search_docs"
     ]
-  },
-  "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   }
 }

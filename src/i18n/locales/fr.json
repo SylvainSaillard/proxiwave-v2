@@ -129,5 +129,17 @@
     "ideas_cta_placeholder": "Décrivez votre idée...",
     "ideas_cta_button": "Proposer",
     "tab_documents": "Documents"
+  },
+  "docs": {
+    "title": "Documents",
+    "subtitle": "Tous les documents de vos projets en un seul endroit",
+    "total": "documents",
+    "stat_total": "Total",
+    "stat_starred": "Favoris",
+    "filter_by": "Filtrer par",
+    "filter_all": "Tous",
+    "search_placeholder": "Rechercher un document...",
+    "all_projects": "Tous les projets",
+    "empty": "Aucun document ne correspond à vos filtres"
   }
 }

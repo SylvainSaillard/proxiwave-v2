@@ -8,6 +8,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import DashboardLayout from './dashboard/DashboardLayout';
 import ProjectDetailView from './dashboard/ProjectDetailView';
+import DocumentsView from './dashboard/DocumentsView';
 
 function LandingPage() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/dashboard" element={<DashboardLayout />} />
       <Route path="/dashboard/project/:id" element={<ProjectDetailView />} />
+      <Route path="/dashboard/documents" element={<DocumentsView />} />
     </Routes>
   );
 }

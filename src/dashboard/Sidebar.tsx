@@ -1,14 +1,17 @@
-import { Home, FolderKanban, MessageSquare, Settings } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Home, FolderKanban, FileText, MessageSquare, Settings } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 const navItems = [
-  { icon: Home, label: 'Accueil', active: true },
-  { icon: FolderKanban, label: 'Projets', active: false },
-  { icon: MessageSquare, label: 'Messages', active: false },
-  { icon: Settings, label: 'Paramètres', active: false },
+  { icon: Home, label: 'Accueil', path: '/dashboard' },
+  { icon: FolderKanban, label: 'Projets', path: '/dashboard' },
+  { icon: FileText, label: 'Documents', path: '/dashboard/documents' },
+  { icon: MessageSquare, label: 'Messages', path: '/dashboard' },
 ];
 
 export default function Sidebar() {
+  const location = useLocation();
+
   return (
     <aside className="hidden md:flex flex-col items-center gap-2 bg-gray-900 py-6 px-3 rounded-bento w-[72px] shrink-0">
       {/* Logo */}
@@ -18,20 +21,24 @@ export default function Sidebar() {
 
       {/* Nav icons */}
       <nav className="flex flex-col items-center gap-1 flex-1">
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            className={cn(
-              'h-11 w-11 rounded-xl flex items-center justify-center transition-all duration-200',
-              item.active
-                ? 'bg-pw-500 text-white shadow-lg shadow-pw-500/30'
-                : 'text-gray-400 hover:text-white hover:bg-white/10'
-            )}
-            title={item.label}
-          >
-            <item.icon className="h-5 w-5" />
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.label}
+              to={item.path}
+              className={cn(
+                'h-11 w-11 rounded-xl flex items-center justify-center transition-all duration-200',
+                isActive
+                  ? 'bg-pw-500 text-white shadow-lg shadow-pw-500/30'
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
+              )}
+              title={item.label}
+            >
+              <item.icon className="h-5 w-5" />
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Bottom settings */}
