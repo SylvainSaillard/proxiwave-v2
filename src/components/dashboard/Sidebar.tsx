@@ -3,6 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { Home, FolderKanban, FileText, MessageSquare, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -20,8 +21,14 @@ export default function Sidebar() {
     <aside className="hidden md:flex flex-col items-center gap-2 bg-gray-900 py-6 px-3 rounded-bento w-[72px] shrink-0">
       {/* Logo */}
       <div className="mb-6">
-        <div className="h-9 w-9 rounded-xl bg-pw-500 flex items-center justify-center">
-          <span className="text-white font-extrabold text-sm">P</span>
+        <div className="h-9 w-9 rounded-xl overflow-hidden">
+          <Image
+            src="/logo-proxiwave.png"
+            alt="Proxiwave"
+            width={36}
+            height={36}
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 

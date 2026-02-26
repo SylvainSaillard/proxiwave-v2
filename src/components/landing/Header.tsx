@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -41,8 +42,14 @@ export default function Header() {
         <div className="flex h-18 items-center justify-between py-4">
           {/* Logo */}
           <a href="#" className="flex items-center gap-2.5 text-xl font-bold tracking-tight">
-            <div className="h-9 w-9 rounded-xl bg-pw-500 flex items-center justify-center">
-              <span className="text-white font-extrabold text-sm">P</span>
+            <div className="h-9 w-9 rounded-xl overflow-hidden">
+              <Image
+                src="/logo-proxiwave.png"
+                alt="Proxiwave"
+                width={36}
+                height={36}
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="text-pw-700">Proxiwave</span>
           </a>

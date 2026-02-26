@@ -1,5 +1,6 @@
 // T027 — Page de connexion
 
+import Image from 'next/image';
 import { signIn } from '@/actions/auth';
 
 interface LoginPageProps {
@@ -14,6 +15,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
+          <div className="flex justify-center mb-4">
+            <div className="h-16 w-16 rounded-xl overflow-hidden">
+              <Image
+                src="/logo-proxiwave.png"
+                alt="Proxiwave"
+                width={64}
+                height={64}
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Proxiwave</h1>
           <p className="text-sm text-gray-400 mt-1">Connectez-vous à votre espace</p>
         </div>
