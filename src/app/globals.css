@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
+/* ================================================================
+   T004 - Palette du prototype Proxiwave (pw-*, cream, warm-*, sky-*)
+   Tailwind CSS v4 : configuration via @theme
+   ================================================================ */
+
+@theme {
+  /* Couleurs principales Proxiwave */
+  --color-cream: #F8FAFB;
+  --color-pw-50: #E8F4FD;
+  --color-pw-100: #BEE0F7;
+  --color-pw-200: #90CAF0;
+  --color-pw-300: #64B5F6;
+  --color-pw-400: #3AA0E8;
+  --color-pw-500: #1976D2;
+  --color-pw-600: #1565A0;
+  --color-pw-700: #0D5A8E;
+  --color-pw-800: #0B4F7A;
+  --color-pw-900: #083D5E;
+
+  /* Couleurs Sky */
+  --color-sky-50: #F0F7FC;
+  --color-sky-100: #DBEDF8;
+  --color-sky-200: #B8DBF2;
+  --color-sky-300: #8FC6E9;
+  --color-sky-400: #5BAADB;
+
+  /* Couleurs Warm */
+  --color-warm-50: #FAFAF8;
+  --color-warm-100: #F4F3EF;
+  --color-warm-200: #ECEAE4;
+  --color-warm-300: #DDD9D0;
+  --color-warm-400: #C4BEB2;
+
+  /* Typographie */
+  --font-sans: Inter, system-ui, sans-serif;
+
+  /* Border radius bento-block */
+  --radius-bento: 20px;
+
+  /* Animation fade-in */
+  --animate-fade-in: fadeIn 0.6s ease-out forwards;
+}
+
+/* Keyframe pour l'animation fade-in */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Reset dark mode — pas de dark mode dans le design Proxiwave */
 :root {
-  --background: #ffffff;
+  --background: #F8FAFB;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Scrollbar custom */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-warm-300);
+  border-radius: 3px;
 }
