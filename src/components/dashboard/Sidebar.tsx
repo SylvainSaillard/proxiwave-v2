@@ -1,4 +1,4 @@
-\'use client';
+'use client';
 // T030 — Sidebar dashboard — identique au prototype
 
 import Link from 'next/link';
