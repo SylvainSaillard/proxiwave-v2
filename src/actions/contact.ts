@@ -22,7 +22,7 @@ export async function submitContact(formData: FormData) {
   if (!to) return;
 
   const { error: emailError } = await resend.emails.send({
-    from: 'Proxiwave <contact@proxiwave.app>',
+    from: 'Proxiwave <hello@contact.proxiwave.app>',
     to,
     replyTo: email,
     subject: `Nouveau message de ${name}`,
