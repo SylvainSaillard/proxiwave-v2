@@ -2,28 +2,31 @@
 // T066 — Section Approche — identique prototype
 
 import { Repeat, Eye, Clock, Check, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import AnimatedSection from './AnimatedSection';
 
-const blocks = [
-  { key: 'block1', icon: Repeat, bg: 'bg-pw-50',   title: 'Itératif & agile',    text: 'Livraisons fréquentes, feedback continu. Vous voyez l\'avancement en temps réel.' },
-  { key: 'block2', icon: Eye,    bg: 'bg-sky-50',   title: 'Transparence totale', text: 'Accès à votre tableau de bord projet 24/7. Aucune surprise sur les délais ou le budget.' },
-  { key: 'block3', icon: Clock,  bg: 'bg-warm-50',  title: 'Livraison rapide',    text: 'De l\'idée au produit en 4 semaines. Notre processus éprouvé garantit les délais.' },
-];
-
-const comparisonRows = [
-  { classic: 'Délais imprévisibles et dépassements fréquents', pw: 'Planning ferme, livraison garantie en 4 semaines' },
-  { classic: 'Communication rare et peu transparente', pw: 'Dashboard temps réel + réunions hebdomadaires' },
-  { classic: 'Budget flou, surprises en cours de route', pw: 'Prix fixe, aucun surcoût caché' },
-  { classic: 'Vous découvrez le résultat à la fin', pw: 'Vous validez chaque étape en amont' },
-];
-
 export default function Approach() {
+  const t = useTranslations('approach');
+
+  const blocks = [
+    { key: 'block1', icon: Repeat, bg: 'bg-pw-50',   title: t('block1_title'), text: t('block1_text') },
+    { key: 'block2', icon: Eye,    bg: 'bg-sky-50',   title: t('block2_title'), text: t('block2_text') },
+    { key: 'block3', icon: Clock,  bg: 'bg-warm-50',  title: t('block3_title'), text: t('block3_text') },
+  ];
+
+  const comparisonRows = [
+    { classic: t('row1_classic'), pw: t('row1_pw') },
+    { classic: t('row2_classic'), pw: t('row2_pw') },
+    { classic: t('row3_classic'), pw: t('row3_pw') },
+    { classic: t('row4_classic'), pw: t('row4_pw') },
+  ];
+
   return (
     <section id="approach" className="py-20 sm:py-28 px-5 sm:px-8">
       <div className="mx-auto max-w-7xl">
         <AnimatedSection>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900 max-w-2xl">
-            Une approche qui change tout
+            {t('title')}
           </h2>
         </AnimatedSection>
 
@@ -49,7 +52,7 @@ export default function Approach() {
         <AnimatedSection>
           <div className="mt-16 sm:mt-20 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
             <div className="rounded-bento bg-warm-50 p-8 sm:p-10">
-              <h4 className="text-lg font-bold text-gray-400 mb-6">Approche classique</h4>
+              <h4 className="text-lg font-bold text-gray-400 mb-6">{t('compare_classic')}</h4>
               <ul className="space-y-4">
                 {comparisonRows.map((row, i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -62,7 +65,7 @@ export default function Approach() {
               </ul>
             </div>
             <div className="rounded-bento bg-pw-50 p-8 sm:p-10">
-              <h4 className="text-lg font-bold text-gray-900 mb-6">Avec Proxiwave</h4>
+              <h4 className="text-lg font-bold text-gray-900 mb-6">{t('compare_pw')}</h4>
               <ul className="space-y-4">
                 {comparisonRows.map((row, i) => (
                   <li key={i} className="flex items-start gap-3">

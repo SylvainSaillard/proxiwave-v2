@@ -3,6 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Users, Award } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import AnimatedSection from './AnimatedSection';
 
 const IMAGES = {
@@ -13,6 +14,8 @@ const IMAGES = {
 };
 
 export default function Hero() {
+  const t = useTranslations('hero');
+
   const handleScroll = (href: string) => {
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -31,7 +34,7 @@ export default function Hero() {
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.5 }} className="absolute bottom-5 left-5">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-semibold text-gray-800 shadow-lg">
                   <Users className="h-3.5 w-3.5 text-pw-500" />
-                  50+ projets livrés
+                  {t('badge_projects')}
                 </span>
               </motion.div>
             </div>
@@ -41,7 +44,7 @@ export default function Hero() {
           <AnimatedSection className="md:col-span-6">
             <div className="rounded-bento bg-pw-50 p-8 sm:p-10 flex flex-col justify-between min-h-[340px]">
               <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }} className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-[1.12] tracking-tight text-gray-900">
-                On construit votre présence digitale, vous gérez votre business.
+                {t('title')}
               </motion.h1>
 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.5 }} className="mt-5 flex items-center gap-3">
@@ -52,11 +55,11 @@ export default function Hero() {
                     </div>
                   ))}
                 </div>
-                <span className="text-xs font-semibold text-gray-500">50+ clients satisfaits</span>
+                <span className="text-xs font-semibold text-gray-500">{t('satisfied_clients')}</span>
               </motion.div>
 
               <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.6 }} className="mt-5 text-sm sm:text-base text-gray-600 leading-relaxed">
-                Agence digitale sur-mesure. Nous créons des sites web, apps et solutions qui convertissent — livrés en 4 semaines.
+                {t('subtitle')}
               </motion.p>
 
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.5 }} className="mt-6 flex justify-end">
@@ -73,13 +76,13 @@ export default function Hero() {
               <img src={IMAGES.office} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-transparent" />
               <div className="relative p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight">Stratégie digitale sur-mesure</h3>
-                <p className="mt-3 text-sm text-white/80 leading-relaxed">Chaque projet est unique. Nous adaptons notre approche à vos objectifs.</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight">{t('strategy_title')}</h3>
+                <p className="mt-3 text-sm text-white/80 leading-relaxed">{t('strategy_text')}</p>
               </div>
               <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9, duration: 0.5 }} className="absolute bottom-5 right-5">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-semibold text-gray-800 shadow-lg">
                   <Award className="h-3.5 w-3.5 text-pw-500" />
-                  Certifié qualité
+                  {t('badge_quality')}
                 </span>
               </motion.div>
             </div>
@@ -93,7 +96,7 @@ export default function Hero() {
               <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1, duration: 0.5 }} className="absolute bottom-4 left-4">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 backdrop-blur-md px-3 py-1.5 text-[11px] font-semibold text-gray-700 shadow">
                   <Sparkles className="h-3 w-3 text-pw-500" />
-                  Sur-mesure
+                  {t('badge_custom')}
                 </span>
               </motion.div>
             </div>
@@ -102,16 +105,16 @@ export default function Hero() {
           {/* Block 5 — Stat "50+" */}
           <AnimatedSection className="md:col-span-2" delay={0.1}>
             <div className="rounded-bento bg-sky-50 p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
-              <span className="text-4xl sm:text-5xl font-extrabold text-pw-600 tracking-tight">50+</span>
-              <span className="mt-2 text-xs font-semibold text-gray-500 leading-tight">Projets livrés</span>
+              <span className="text-4xl sm:text-5xl font-extrabold text-pw-600 tracking-tight">{t('stat1_value')}</span>
+              <span className="mt-2 text-xs font-semibold text-gray-500 leading-tight">{t('stat1_label')}</span>
             </div>
           </AnimatedSection>
 
           {/* Block 6 — Stat accent */}
           <AnimatedSection className="md:col-span-2" delay={0.15}>
             <div className="rounded-bento bg-pw-500 p-6 flex flex-col items-center justify-center text-center min-h-[200px]">
-              <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">4 sem</span>
-              <span className="mt-2 text-xs font-semibold text-pw-100 leading-tight">Délai moyen de livraison</span>
+              <span className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">{t('stat2_value')}</span>
+              <span className="mt-2 text-xs font-semibold text-pw-100 leading-tight">{t('stat2_label')}</span>
             </div>
           </AnimatedSection>
 
@@ -120,10 +123,10 @@ export default function Hero() {
         {/* CTA bar */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: 0.6 }} className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
           <button onClick={() => handleScroll('#contact')} className="rounded-full px-8 py-4 bg-gray-900 text-white font-semibold hover:bg-pw-600 transition-colors duration-300 hover:scale-[1.02] active:scale-[0.98]">
-            Démarrer un projet
+            {t('cta_start')}
           </button>
           <button onClick={() => handleScroll('#approach')} className="rounded-full px-8 py-4 border border-gray-200 text-gray-700 font-semibold hover:border-gray-300 hover:bg-warm-50 transition-colors">
-            Découvrir notre approche
+            {t('cta_discover')}
           </button>
         </motion.div>
 

@@ -5,19 +5,22 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
-
-const navItems = [
-  { key: 'approach', href: '#approach', label: 'Approche' },
-  { key: 'results', href: '#results', label: 'Résultats' },
-  { key: 'process', href: '#process', label: 'Processus' },
-  { key: 'contact', href: '#contact', label: 'Contact' },
-];
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Header() {
+  const t = useTranslations('nav');
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const navItems = [
+    { key: 'approach', href: '#approach', label: t('approach') },
+    { key: 'results',  href: '#results',  label: t('results')  },
+    { key: 'process',  href: '#process',  label: t('process')  },
+    { key: 'contact',  href: '#contact',  label: t('contact')  },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -69,17 +72,18 @@ export default function Header() {
 
           {/* Desktop actions */}
           <div className="hidden md:flex items-center gap-3">
+            <LanguageSwitcher />
             <Link
               href="/login"
               className="rounded-full px-5 py-2.5 text-xs font-semibold border border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-warm-50 transition-colors"
             >
-              Se connecter
+              {t('login')}
             </Link>
             <button
               onClick={() => handleNavClick('#contact')}
               className="rounded-full px-5 py-2.5 text-xs font-semibold bg-gray-900 text-white hover:bg-pw-600 transition-colors"
             >
-              Nous contacter
+              {t('cta')}
             </button>
           </div>
 
@@ -112,12 +116,13 @@ export default function Header() {
                   {item.label}
                 </button>
               ))}
-              <div className="pt-4">
+              <div className="pt-4 flex flex-col gap-3">
+                <LanguageSwitcher />
                 <button
                   onClick={() => handleNavClick('#contact')}
                   className="w-full rounded-full px-5 py-3 text-sm font-semibold bg-gray-900 text-white hover:bg-pw-600 transition-colors"
                 >
-                  Nous contacter
+                  {t('cta')}
                 </button>
               </div>
             </div>

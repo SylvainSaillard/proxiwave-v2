@@ -1,8 +1,11 @@
 // T068 — Footer landing
 
 import Image from 'next/image';
+import { getTranslations } from 'next-intl/server';
 
-export default function Footer() {
+export default async function Footer() {
+  const t = await getTranslations('footer');
+
   return (
     <footer className="py-10 px-5 sm:px-8 border-t border-warm-100">
       <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -19,8 +22,8 @@ export default function Footer() {
           <span className="text-sm font-semibold text-pw-700">Proxiwave</span>
         </div>
         <div className="flex items-center gap-6 text-sm text-gray-400">
-          <span>© 2026 Proxiwave. Tous droits réservés.</span>
-          <a href="/mentions-legales" className="hover:text-gray-600 transition-colors">Mentions légales</a>
+          <span>{t('rights')}</span>
+          <a href="/mentions-legales" className="hover:text-gray-600 transition-colors">{t('legal')}</a>
         </div>
       </div>
     </footer>

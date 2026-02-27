@@ -3,14 +3,16 @@
 
 import { useState, useRef } from 'react';
 import { Mail, Phone, Shield, Users } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import AnimatedSection from './AnimatedSection';
 import { submitContact } from '@/actions/contact';
 
 export default function Contact() {
+  const t = useTranslations('contact');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('sending');
     try {
@@ -28,10 +30,10 @@ export default function Contact() {
       <div className="mx-auto max-w-7xl">
         <AnimatedSection>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-gray-900">
-            Parlons de votre projet
+            {t('title')}
           </h2>
           <p className="mt-4 text-lg text-gray-500 max-w-lg">
-            Réponse sous 24h. Premier échange gratuit et sans engagement.
+            {t('subtitle')}
           </p>
         </AnimatedSection>
 
@@ -41,26 +43,26 @@ export default function Contact() {
             <div className="rounded-bento bg-white p-8 sm:p-10 shadow-sm border border-warm-100">
               <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">Nom</label>
+                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">{t('name_label')}</label>
                   <input
                     id="name" name="name" type="text" required
-                    placeholder="Votre nom"
+                    placeholder={t('name_placeholder')}
                     className="w-full rounded-xl border border-warm-200 bg-cream px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                  <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">{t('email_label')}</label>
                   <input
                     id="email" name="email" type="email" required
-                    placeholder="vous@exemple.com"
+                    placeholder={t('email_placeholder')}
                     className="w-full rounded-xl border border-warm-200 bg-cream px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent transition-all"
                   />
                 </div>
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">Message</label>
+                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">{t('message_label')}</label>
                   <textarea
                     id="message" name="message" required rows={4}
-                    placeholder="Décrivez votre projet..."
+                    placeholder={t('message_placeholder')}
                     className="w-full rounded-xl border border-warm-200 bg-cream px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent transition-all resize-none"
                   />
                 </div>
@@ -70,18 +72,14 @@ export default function Contact() {
                   disabled={status === 'sending'}
                   className="w-full rounded-full px-8 py-4 bg-gray-900 text-white font-semibold hover:bg-pw-600 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  {status === 'sending' ? 'Envoi...' : 'Envoyer le message'}
+                  {status === 'sending' ? t('sending') : t('submit')}
                 </button>
 
                 {status === 'success' && (
-                  <p className="text-sm text-green-600 font-medium text-center">
-                    Message envoyé ! Nous vous répondons sous 24h.
-                  </p>
+                  <p className="text-sm text-green-600 font-medium text-center">{t('success')}</p>
                 )}
                 {status === 'error' && (
-                  <p className="text-sm text-red-500 font-medium text-center">
-                    Une erreur s'est produite. Réessayez ou écrivez-nous directement.
-                  </p>
+                  <p className="text-sm text-red-500 font-medium text-center">{t('error')}</p>
                 )}
               </form>
             </div>
@@ -95,20 +93,20 @@ export default function Contact() {
                   <div className="h-10 w-10 rounded-xl bg-white/70 flex items-center justify-center">
                     <Shield className="h-5 w-5 text-pw-500" />
                   </div>
-                  <span className="text-base font-semibold text-gray-900">Réponse garantie sous 24h ouvrées</span>
+                  <span className="text-base font-semibold text-gray-900">{t('response_time')}</span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="h-10 w-10 rounded-xl bg-white/70 flex items-center justify-center">
                     <Users className="h-5 w-5 text-pw-500" />
                   </div>
-                  <span className="text-base font-semibold text-gray-900">50+ clients nous font confiance</span>
+                  <span className="text-base font-semibold text-gray-900">{t('trust')}</span>
                 </div>
               </div>
             </AnimatedSection>
 
             <AnimatedSection delay={0.2}>
               <div className="rounded-bento bg-gray-900 p-8 sm:p-10 text-white">
-                <p className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-4">Contact direct</p>
+                <p className="text-sm text-gray-400 font-medium uppercase tracking-wider mb-4">{t('contact_direct')}</p>
                 <div className="space-y-4">
                   <a href="mailto:sylvainsaillard@proxiwave.com" className="flex items-center gap-3 text-white hover:text-pw-300 transition-colors group">
                     <Mail className="h-5 w-5 text-gray-500 group-hover:text-pw-300 transition-colors" />
