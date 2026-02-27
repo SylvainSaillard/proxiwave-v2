@@ -1,0 +1,157 @@
+# Proxiwave v2 — Windsurf Rules
+
+> Ces règles sont chargées automatiquement par tout agent Windsurf avant chaque intervention.
+> Documentation complète : `specs/001-proxiwave-v2/`
+
+---
+
+## 1. Projet & Stack
+
+- **Framework** : Next.js 15 (App Router, Turbopack) — TypeScript 5.x strict
+- **Backend** : Supabase Cloud (project ref: `rteuevldfahmxsnafexa`)
+- **CSS** : Tailwind CSS 3 (palette custom `pw-*`, `cream`, `warm-*`)
+- **Animations** : Framer Motion 11 (respecter `prefers-reduced-motion`)
+- **Icônes** : Lucide React
+- **i18n** : next-intl (sans segment `[locale]` dans les URLs)
+- **Email** : Resend + React Email
+- **Déploiement** : Netlify
+- **Package manager** : pnpm
+
+---
+
+## 2. Architecture & Structure des fichiers
+
+```
+src/
+├── app/(public)/          # Routes publiques (landing, mentions légales)
+├── app/(auth)/            # Login, callback auth
+├── app/(dashboard)/       # Routes protégées (auth guard dans layout)
+├── components/ui/         # Primitives réutilisables
+├── components/landing/    # Sections landing page
+├── components/dashboard/  # Composants dashboard
+├── components/project/    # Composants détail projet
+├── lib/supabase/          # 3 clients Supabase (server, client, admin)
+├── types/                 # database.ts (auto-généré) + app.ts (enums)
+├── actions/               # Server Actions partagées
+├── emails/                # Templates React Email
+└── messages/              # fr.json, en.json (next-intl)
+```
+
+- **Server Actions** pour toutes les mutations CRUD (`'use server'`). Pas d'API REST sauf webhooks.
+- **Route Handlers** réservés aux endpoints publics sans auth (`/api/contact`).
+- Server Actions colocalisées dans des fichiers `actions.ts` proches des pages qui les utilisent.
+
+---
+
+## 3. Supabase — 3 clients distincts
+
+| Fichier | Usage | Sync/Async |
+|---------|-------|------------|
+| `lib/supabase/server.ts` | Server Components + Server Actions | **async** (`await cookies()`) |
+| `lib/supabase/client.ts` | Client Components uniquement | sync |
+| `lib/supabase/admin.ts` | Opérations admin (bypass RLS) | sync, **serveur uniquement** |
+
+---
+
+## 4. Règles de sécurité CRITIQUES
+
+### Next.js 15
+- `cookies()` et `headers()` sont **async** → toujours `await cookies()`. Oublier le `await` cause un bug silencieux où `auth.getUser()` retourne `null`.
+- Toujours `supabase.auth.getUser()` côté serveur. **JAMAIS** `supabase.auth.getSession()` (lit le JWT sans revalidation → spoofable).
+- Le middleware DOIT retourner `supabaseResponse` (la variable créée avec `NextResponse.next({ request })`), **jamais** un nouveau `NextResponse.next()`.
+
+### Supabase
+- `SUPABASE_SERVICE_ROLE_KEY` utilisé **uniquement** dans `lib/supabase/admin.ts`. **JAMAIS** importé dans un Client Component.
+- RLS **activé** sur toutes les tables, sans exception.
+- `author_id` et `message_type` sont toujours déduits côté serveur (`auth.uid()` / rôle). Jamais fournis par le client.
+
+---
+
+## 5. Rôles & RLS (Row Level Security)
+
+### 3 rôles
+
+| Rôle | Accès projets | Écriture |
+|------|---------------|----------|
+| `superadmin` | Tous les projets, tous les clients | CRUD complet |
+| `admin_client` | Tous les projets de **son** client | Lecture + idées + messages |
+| `chef_de_projet` | Ses projets **assignés** uniquement | Lecture + idées + messages |
+
+### Fonctions SQL helper (STABLE SECURITY DEFINER)
+- `public.get_my_role()` → retourne le rôle de l'utilisateur courant
+- `public.get_my_client_id()` → retourne le `client_id` (NULL pour superadmin)
+- `public.can_access_project(UUID)` → vérifie l'accès au projet selon le rôle
+
+### Isolation inter-clients
+Aucun utilisateur (admin_client ou chef_de_projet) ne peut **jamais** accéder aux données d'un autre client. Zéro fuite inter-client.
+
+---
+
+## 6. Design System — UI GELÉE
+
+- Le design du prototype est **validé et gelé**. Aucune modification visuelle permise.
+- **Porter** les composants du prototype en remplaçant les mockData par des props Supabase.
+- Palette : `pw-*` (bleu principal), `cream` (fond), `warm-*` (bordures/accents)
+- Layout : bento cards (`rounded-bento`), ombres douces, espacement généreux
+- Typographie : `font-extrabold` pour les titres, `font-semibold` pour les sous-titres
+- Logo : `/logo-proxiwave.png` (Next.js `Image` component)
+- Animations Framer Motion : conserver celles du prototype, respecter `prefers-reduced-motion`
+
+---
+
+## 7. Internationalisation (next-intl)
+
+- **Pas de segment `[locale]`** dans les URLs. Locale détectée depuis cookie ou `Accept-Language`.
+- Server Components : `const t = await getTranslations('namespace')`
+- Client Components : `const t = useTranslations('namespace')`
+- Fichiers de traduction : `messages/fr.json`, `messages/en.json`
+- **Aucune chaîne hardcodée** dans les composants — tout passe par `t('key')`.
+
+---
+
+## 8. Conventions de code
+
+- **TypeScript strict** : `strict: true`, `noImplicitAny: true`, zéro `any`
+- Types auto-générés Supabase : `src/types/database.ts` (via `supabase gen types typescript`)
+- Types applicatifs partagés dans `src/types/app.ts` :
+  ```
+  UserRole, ProjectStatus, TaskStatus, TaskPriority, SprintStatus,
+  SprintItemStatus, IdeaStatus, FileType, DocumentCategory, MessageType
+  ```
+- Helper `cn()` (clsx + tailwind-merge) dans `lib/utils.ts`
+- Pas de commentaires ou documentation ajoutés/supprimés sauf demande explicite
+- Pas d'emojis dans le code sauf demande explicite
+
+---
+
+## 9. Data Model (résumé)
+
+11 tables : `clients`, `profiles`, `projects`, `project_members`, `tasks`, `subtasks`, `sprints`, `sprint_items`, `ideas`, `project_messages`, `documents`, `contacts`
+
+Schéma complet : `specs/001-proxiwave-v2/data-model.md`
+Policies RLS : `specs/001-proxiwave-v2/contracts/rls-policies.sql`
+Contrats Server Actions : `specs/001-proxiwave-v2/contracts/server-actions.md`
+
+---
+
+## 10. Documentation de référence
+
+Avant toute intervention significative, consulter :
+- `specs/001-proxiwave-v2/spec.md` — Spécifications fonctionnelles (User Stories, Requirements)
+- `specs/001-proxiwave-v2/data-model.md` — Schéma BDD complet
+- `specs/001-proxiwave-v2/tasks.md` — Plan d'exécution (76 tâches, 10 phases)
+- `specs/001-proxiwave-v2/contracts/server-actions.md` — Contrats des Server Actions
+- `specs/001-proxiwave-v2/contracts/rls-policies.sql` — Policies RLS complètes
+- `specs/001-proxiwave-v2/quickstart.md` — Guide de démarrage et checklist
+- `specs/001-proxiwave-v2/research.md` — Décisions techniques et rationale
+
+---
+
+## 11. Informations entreprise
+
+- **Société** : Proxiwave srl
+- **CUI** : RO36877369
+- **Adresse** : Strada Roma 42a, Sector 1, Bucuresti, Roumanie (011775)
+- **Enregistrement** : J40/16978/2016
+- **Email** : sylvainsaillard@proxiwave.com
+- **Téléphone** : 0040 771 481 101
