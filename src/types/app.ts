@@ -105,6 +105,10 @@ export interface Idea {
   author_id: string;
   title: string;
   status: IdeaStatus;
+  start_date: string | null;
+  end_date: string | null;
+  priority: TaskPriority | null;
+  duration_weeks: number | null;
   created_at: string;
   author?: Pick<Profile, 'full_name' | 'initials' | 'avatar_color'>;
 }
@@ -198,6 +202,11 @@ export interface CreateUserInput {
   role: 'admin_client' | 'chef_de_projet';
   client_id: string;
   full_name: string;
+}
+
+export interface CreateClientInput {
+  name: string;
+  logo_url?: string;
 }
 
 export interface DocumentFilters {

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { X } from 'lucide-react';
+import { X, Plus } from 'lucide-react';
 import { createProject } from '@/actions/projects';
+import CreateClientModal from './CreateClientModal';
 import type { Client, Profile, ProjectStatus } from '@/types/app';
 
 interface CreateProjectModalProps {
@@ -36,6 +37,8 @@ export default function CreateProjectModal({
 }: CreateProjectModalProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [localClients, setLocalClients] = useState<Client[]>(clients);
 
   const [form, setForm] = useState({
     name: '',
@@ -122,19 +125,29 @@ export default function CreateProjectModal({
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Client <span className="text-red-400">*</span>
               </label>
-              <select
-                name="client_id"
-                value={form.client_id}
-                onChange={handleChange}
-                className="w-full rounded-xl border border-warm-200 px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent transition-all"
-              >
-                <option value="">Sélectionner un client</option>
-                {clients.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              <div className="flex gap-2">
+                <select
+                  name="client_id"
+                  value={form.client_id}
+                  onChange={handleChange}
+                  className="flex-1 rounded-xl border border-warm-200 px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent transition-all"
+                >
+                  <option value="">Sélectionner un client</option>
+                  {localClients.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowClientModal(true)}
+                  title="Créer un nouveau client"
+                  className="h-[42px] w-[42px] shrink-0 rounded-xl border border-warm-200 flex items-center justify-center text-gray-500 hover:text-pw-600 hover:border-pw-300 transition-all"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           )}
 
@@ -240,6 +253,18 @@ export default function CreateProjectModal({
           </div>
         </form>
       </div>
+      {showClientModal && (
+        <CreateClientModal
+          onClose={() => setShowClientModal(false)}
+          onSuccess={(newClient) => {
+            setLocalClients((prev) =>
+              [...prev, { ...newClient, logo_url: null, created_at: new Date().toISOString() }].sort((a, b) => a.name.localeCompare(b.name))
+            );
+            setForm((prev) => ({ ...prev, client_id: newClient.id }));
+            setShowClientModal(false);
+          }}
+        />
+      )}
     </div>
   );
 }

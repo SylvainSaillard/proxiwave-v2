@@ -3,7 +3,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
-import type { Project, DashboardStats, DashboardMessage, Client, CreateProjectInput } from '@/types/app';
+import type { Project, DashboardStats, DashboardMessage, Client, CreateProjectInput, CreateClientInput } from '@/types/app';
 
 export async function getProjects(): Promise<Project[]> {
   const supabase = await createClient();
@@ -82,6 +82,63 @@ export async function createProject(
 
   revalidatePath('/dashboard');
   return { id: (data as any).id };
+}
+
+export async function createNewClient(
+  input: CreateClientInput
+): Promise<{ id: string; name: string } | { error: string }> {
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Non authentifié' };
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (!profile || profile.role !== 'superadmin') {
+    return { error: 'Accès non autorisé' };
+  }
+
+  if (!input.name.trim()) return { error: 'Le nom du client est requis.' };
+
+  const { data, error } = await supabase
+    .from('clients')
+    .insert({
+      name: input.name.trim(),
+      logo_url: input.logo_url?.trim() || null,
+    } as any)
+    .select('id, name')
+    .single();
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/dashboard');
+  return { id: (data as any).id, name: (data as any).name };
+}
+
+export async function getFirstActiveProject(): Promise<Project | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('status', 'en_cours')
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error || !data) {
+    const { data: fallback } = await supabase
+      .from('projects')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    return (fallback as Project) ?? null;
+  }
+  return data as Project;
 }
 
 export async function getDashboardMessages(): Promise<DashboardMessage[]> {

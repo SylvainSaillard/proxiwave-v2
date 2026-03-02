@@ -2,7 +2,8 @@
 // T059 — Vue Documents globale — identique prototype
 
 import { useState } from 'react';
-import { FileText, Download, Star, Search, Filter, Image, FolderOpen } from 'lucide-react';
+import { FileText, Download, Star, Search, Filter, Image, FolderOpen, Package, ClipboardList, Palette, BarChart3, Receipt, FolderClosed, Pen, ImageIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { cn, formatDate, formatFileSize } from '@/lib/utils';
 import { EmptyState } from '@/components/ui';
 import type { Document, Project } from '@/types/app';
@@ -15,20 +16,20 @@ const docTypeConfig: Record<string, { color: string; bg: string }> = {
   image: { color: 'text-pink-500',   bg: 'bg-pink-50' },
 };
 
-const catConfig: Record<string, { label: string; emoji: string; bg: string; border: string; text: string }> = {
-  livrable:      { label: 'Livrable',      emoji: '📦', bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700' },
-  spécification: { label: 'Spécification', emoji: '📋', bg: 'bg-pw-50',     border: 'border-pw-200',     text: 'text-pw-700' },
-  design:        { label: 'Design',        emoji: '🎨', bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
-  rapport:       { label: 'Rapport',       emoji: '📊', bg: 'bg-amber-50',  border: 'border-amber-200',  text: 'text-amber-700' },
-  facture:       { label: 'Facture',       emoji: '🧾', bg: 'bg-sky-50',    border: 'border-sky-200',    text: 'text-sky-700' },
+const catConfig: Record<string, { label: string; icon: LucideIcon; bg: string; border: string; text: string }> = {
+  livrable:      { label: 'Livrable',      icon: Package,       bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700' },
+  spécification: { label: 'Spécification', icon: ClipboardList, bg: 'bg-pw-50',     border: 'border-pw-200',     text: 'text-pw-700' },
+  design:        { label: 'Design',        icon: Palette,       bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
+  rapport:       { label: 'Rapport',       icon: BarChart3,     bg: 'bg-amber-50',  border: 'border-amber-200',  text: 'text-amber-700' },
+  facture:       { label: 'Facture',       icon: Receipt,       bg: 'bg-sky-50',    border: 'border-sky-200',    text: 'text-sky-700' },
 };
 
-const typeLabel: Record<string, { label: string; emoji: string }> = {
-  pdf:   { label: 'PDF',   emoji: '📄' },
-  figma: { label: 'Figma', emoji: '🎨' },
-  sheet: { label: 'Excel', emoji: '📊' },
-  doc:   { label: 'Doc',   emoji: '📝' },
-  image: { label: 'Image', emoji: '🖼️' },
+const typeLabel: Record<string, { label: string; icon: LucideIcon }> = {
+  pdf:   { label: 'PDF',   icon: FileText },
+  figma: { label: 'Figma', icon: Palette },
+  sheet: { label: 'Excel', icon: BarChart3 },
+  doc:   { label: 'Doc',   icon: Pen },
+  image: { label: 'Image', icon: ImageIcon },
 };
 
 interface DocumentsViewClientProps {
@@ -80,7 +81,7 @@ export default function DocumentsViewClient({ documents, projects }: DocumentsVi
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
         <div className="rounded-xl bg-gradient-to-br from-pw-50 to-pw-100 border border-pw-200 p-4 text-center">
           <p className="text-3xl font-extrabold text-pw-700">{totalDocs}</p>
-          <p className="text-[10px] font-bold text-pw-600 uppercase tracking-wider mt-1">📁 Total</p>
+          <p className="text-[10px] font-bold text-pw-600 uppercase tracking-wider mt-1 flex items-center justify-center gap-1"><FolderClosed className="h-3 w-3" /> Total</p>
         </div>
         <button
           onClick={() => setStarredOnly(!starredOnly)}
@@ -92,14 +93,15 @@ export default function DocumentsViewClient({ documents, projects }: DocumentsVi
           )}
         >
           <p className="text-3xl font-extrabold text-amber-700">{starredDocs}</p>
-          <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mt-1">⭐ Favoris</p>
+          <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mt-1 flex items-center justify-center gap-1"><Star className="h-3 w-3" /> Favoris</p>
         </button>
         {Object.entries(byType).slice(0, 4).map(([type, count]) => {
-          const tl = typeLabel[type] ?? { label: type, emoji: '📁' };
+          const tl = typeLabel[type] ?? { label: type, icon: FolderClosed };
+          const TlIcon = tl.icon;
           return (
             <div key={type} className="rounded-xl bg-warm-50 border border-warm-100 p-4 text-center">
               <p className="text-3xl font-extrabold text-gray-800">{count}</p>
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1">{tl.emoji} {tl.label}</p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1 flex items-center justify-center gap-1"><TlIcon className="h-3 w-3" /> {tl.label}</p>
             </div>
           );
         })}
@@ -128,7 +130,7 @@ export default function DocumentsViewClient({ documents, projects }: DocumentsVi
                 categoryFilter === cat ? cn(cfg.bg, cfg.text, cfg.border) : 'bg-white text-gray-500 border-warm-200 hover:border-gray-300'
               )}
             >
-              {cfg.emoji} {cfg.label} <span className="ml-1 opacity-60">{byCategory[cat] || 0}</span>
+              <cfg.icon className="h-3 w-3 inline-block" /> {cfg.label} <span className="ml-1 opacity-60">{byCategory[cat] || 0}</span>
             </button>
           );
         })}
@@ -192,7 +194,7 @@ export default function DocumentsViewClient({ documents, projects }: DocumentsVi
                       <div className="flex items-center justify-between mt-3 pt-3 border-t border-warm-50">
                         <span className="text-[11px] text-gray-500">Document</span>
                         <span className={cn('inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider border', catCfg.bg, catCfg.text, catCfg.border)}>
-                          {catCfg.emoji} {catCfg.label}
+                          <catCfg.icon className="h-3 w-3 inline-block" /> {catCfg.label}
                         </span>
                       </div>
                     </div>

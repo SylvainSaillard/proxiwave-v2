@@ -1,7 +1,7 @@
 'use client';
 // T043-T058 — Vue détail projet — identique prototype
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -22,10 +22,20 @@ import {
   ArrowUpCircle,
   MinusCircle,
   Star,
+  Pencil,
+  Sparkles,
+  Search,
+  XCircle,
+  BarChart3,
+  ClipboardList,
+  Palette,
+  X,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { cn, formatDate, formatFileSize } from '@/lib/utils';
 import { ProgressBar, ProgressRing, Badge } from '@/components/ui';
-import { submitIdea, sendProjectMessage } from '@/actions/project-detail';
+import { useRouter } from 'next/navigation';
+import { submitIdea, sendProjectMessage, updateIdeaStatus, updateIdeaPrepFields, updateTask } from '@/actions/project-detail';
 import type {
   Project,
   Task,
@@ -38,6 +48,7 @@ import type {
   TaskPriority,
   SprintStatus,
   IdeaStatus,
+  UserRole,
 } from '@/types/app';
 
 type TabKey = 'tasks' | 'ideas' | 'messages' | 'sprints' | 'documents';
@@ -67,11 +78,11 @@ function statusBadge(status: string) {
   );
 }
 
-function satisfactionEmoji(score: number) {
-  if (score >= 4.5) return '😍';
-  if (score >= 4) return '😊';
-  if (score >= 3) return '🙂';
-  return '😐';
+function satisfactionColor(score: number) {
+  if (score >= 4.5) return 'text-green-500';
+  if (score >= 4) return 'text-pw-500';
+  if (score >= 3) return 'text-amber-500';
+  return 'text-gray-400';
 }
 
 /* ── Priority helpers ── */
@@ -120,13 +131,53 @@ function KpiTab({
 
 /* ── Task Detail Panel ── */
 
-function TaskDetailPanel({ task, onClose }: { task: Task; onClose: () => void }) {
+function TaskDetailPanel({ task, onClose, projectId, userRole }: { task: Task; onClose: () => void; projectId: string; userRole: UserRole }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    title: task.title,
+    description: task.description ?? '',
+    status: task.status,
+    priority: task.priority,
+    start_date: task.start_date ?? '',
+    end_date: task.end_date ?? '',
+    duration_weeks: task.duration_weeks.toString(),
+    progress_pct: task.progress_pct.toString(),
+  });
+  const router = useRouter();
+
   const prio = priorityConfig(task.priority);
   const PrioIcon = prio.icon;
   const subtasks = task.subtasks ?? [];
   const doneCount = subtasks.filter((s) => s.is_done).length;
   const totalSubs = subtasks.length;
   const subtaskPercent = totalSubs > 0 ? Math.round((doneCount / totalSubs) * 100) : 0;
+
+  function handleSave() {
+    setFeedback(null);
+    startTransition(async () => {
+      const result = await updateTask(task.id, projectId, {
+        title: form.title,
+        description: form.description,
+        status: form.status,
+        priority: form.priority as TaskPriority,
+        start_date: form.start_date || undefined,
+        end_date: form.end_date || undefined,
+        duration_weeks: form.duration_weeks ? Number(form.duration_weeks) : undefined,
+        progress_pct: form.progress_pct ? Number(form.progress_pct) : undefined,
+      });
+      if ('error' in result) {
+        setFeedback(result.error);
+      } else {
+        setFeedback('Tâche mise à jour.');
+        setIsEditing(false);
+        router.refresh();
+      }
+    });
+  }
+
+  const canEdit = userRole === 'superadmin';
 
   return (
     <div className="overflow-hidden transition-all duration-300 ease-out">
@@ -142,104 +193,222 @@ function TaskDetailPanel({ task, onClose }: { task: Task; onClose: () => void })
               <p className="text-sm text-gray-500 leading-relaxed">{task.description}</p>
             )}
           </div>
-          <button
-            onClick={(e) => { e.stopPropagation(); onClose(); }}
-            className="shrink-0 h-8 w-8 rounded-lg bg-warm-50 hover:bg-warm-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            ✕
-          </button>
-        </div>
-
-        {/* Info grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
-              <Calendar className="h-4 w-4 text-sky-500" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Période</p>
-              <p className="text-xs font-bold text-gray-900 truncate">
-                {formatDate(task.start_date)} → {formatDate(task.end_date)}
-              </p>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
-            <div className={cn('h-8 w-8 rounded-full flex items-center justify-center shrink-0', prio.bg)}>
-              <PrioIcon className={cn('h-4 w-4', prio.color)} />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Priorité</p>
-              <p className="text-xs font-bold text-gray-900">{prio.label}</p>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-pw-50 flex items-center justify-center shrink-0">
-              <Zap className="h-4 w-4 text-pw-500" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Durée</p>
-              <p className="text-xs font-bold text-gray-900">{task.duration_weeks}s</p>
-            </div>
-          </div>
-
-          <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
-            <div className="h-8 w-8 rounded-full bg-green-50 flex items-center justify-center shrink-0">
-              <Flag className="h-4 w-4 text-green-500" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Avancement</p>
-              <p className="text-xs font-bold text-gray-900">{task.progress_pct}%</p>
-            </div>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {canEdit && !isEditing && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setIsEditing(true); }}
+                className="h-8 w-8 rounded-lg bg-warm-50 hover:bg-warm-100 flex items-center justify-center text-gray-400 hover:text-pw-600 transition-colors"
+                title="Modifier la tâche"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
+            )}
+            <button
+              onClick={(e) => { e.stopPropagation(); onClose(); }}
+              className="h-8 w-8 rounded-lg bg-warm-50 hover:bg-warm-100 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         </div>
 
-        {/* Subtasks + Tags */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          {totalSubs > 0 && (
-            <div className="flex-1 rounded-xl bg-warm-50 p-4">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-bold text-gray-900">Sous-tâches</p>
-                <span className="text-[10px] font-bold text-gray-400">{doneCount}/{totalSubs}</span>
+        {isEditing ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="sm:col-span-2">
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Titre</label>
+                <input
+                  value={form.title}
+                  onChange={(e) => setForm((p) => ({ ...p, title: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                />
               </div>
-              <ProgressBar value={subtaskPercent} height="h-1.5" trackColor="bg-warm-200" />
-              <div className="space-y-2 mt-3">
-                {subtasks.map((sub) => (
-                  <div key={sub.id} className="flex items-center gap-2">
-                    <div className={cn(
-                      'h-4 w-4 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors',
-                      sub.is_done ? 'bg-pw-500 border-pw-500' : 'border-warm-300 bg-white'
-                    )}>
-                      {sub.is_done && (
-                        <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className={cn('text-xs', sub.is_done ? 'text-gray-400 line-through' : 'text-gray-700')}>
-                      {sub.title}
-                    </span>
+              <div className="sm:col-span-2">
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Description</label>
+                <textarea
+                  rows={2}
+                  value={form.description}
+                  onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Statut</label>
+                <select
+                  value={form.status}
+                  onChange={(e) => setForm((p) => ({ ...p, status: e.target.value as TaskStatus }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                >
+                  <option value="validée">Validée</option>
+                  <option value="en_cours">En cours</option>
+                  <option value="livrée">Livrée</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Priorité</label>
+                <select
+                  value={form.priority}
+                  onChange={(e) => setForm((p) => ({ ...p, priority: e.target.value as TaskPriority }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                >
+                  <option value="haute">Haute</option>
+                  <option value="moyenne">Moyenne</option>
+                  <option value="basse">Basse</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Date début</label>
+                <input
+                  type="date"
+                  value={form.start_date}
+                  onChange={(e) => setForm((p) => ({ ...p, start_date: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Date fin</label>
+                <input
+                  type="date"
+                  value={form.end_date}
+                  onChange={(e) => setForm((p) => ({ ...p, end_date: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Durée (semaines)</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={form.duration_weeks}
+                  onChange={(e) => setForm((p) => ({ ...p, duration_weeks: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-[11px] font-medium text-gray-600 mb-1">Avancement (%)</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={form.progress_pct}
+                  onChange={(e) => setForm((p) => ({ ...p, progress_pct: e.target.value }))}
+                  className="w-full rounded-lg border border-warm-200 px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+                />
+              </div>
+            </div>
+            {feedback && (
+              <p className={cn('text-xs font-medium', feedback.startsWith('Tâche') ? 'text-green-600' : 'text-red-500')}>{feedback}</p>
+            )}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleSave}
+                disabled={isPending}
+                className="rounded-lg bg-pw-500 px-4 py-2 text-xs font-bold text-white hover:bg-pw-600 transition-all disabled:opacity-50"
+              >
+                {isPending ? '...' : 'Enregistrer'}
+              </button>
+              <button
+                onClick={() => { setIsEditing(false); setFeedback(null); }}
+                className="rounded-lg border border-warm-200 px-4 py-2 text-xs font-medium text-gray-500 hover:bg-warm-50 transition-all"
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Info grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+              <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-full bg-sky-50 flex items-center justify-center shrink-0">
+                  <Calendar className="h-4 w-4 text-sky-500" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Période</p>
+                  <p className="text-xs font-bold text-gray-900 truncate">
+                    {formatDate(task.start_date)} → {formatDate(task.end_date)}
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+                <div className={cn('h-8 w-8 rounded-full flex items-center justify-center shrink-0', prio.bg)}>
+                  <PrioIcon className={cn('h-4 w-4', prio.color)} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Priorité</p>
+                  <p className="text-xs font-bold text-gray-900">{prio.label}</p>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-full bg-pw-50 flex items-center justify-center shrink-0">
+                  <Zap className="h-4 w-4 text-pw-500" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Durée</p>
+                  <p className="text-xs font-bold text-gray-900">{task.duration_weeks}s</p>
+                </div>
+              </div>
+
+              <div className="rounded-xl bg-warm-50 p-3 flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-full bg-green-50 flex items-center justify-center shrink-0">
+                  <Flag className="h-4 w-4 text-green-500" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Avancement</p>
+                  <p className="text-xs font-bold text-gray-900">{task.progress_pct}%</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Subtasks + Tags */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {totalSubs > 0 && (
+                <div className="flex-1 rounded-xl bg-warm-50 p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-bold text-gray-900">Sous-tâches</p>
+                    <span className="text-[10px] font-bold text-gray-400">{doneCount}/{totalSubs}</span>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
+                  <ProgressBar value={subtaskPercent} height="h-1.5" trackColor="bg-warm-200" />
+                  <div className="space-y-2 mt-3">
+                    {subtasks.map((sub) => (
+                      <div key={sub.id} className="flex items-center gap-2">
+                        <div className={cn(
+                          'h-4 w-4 rounded-md border-2 flex items-center justify-center shrink-0 transition-colors',
+                          sub.is_done ? 'bg-pw-500 border-pw-500' : 'border-warm-300 bg-white'
+                        )}>
+                          {sub.is_done && (
+                            <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          )}
+                        </div>
+                        <span className={cn('text-xs', sub.is_done ? 'text-gray-400 line-through' : 'text-gray-700')}>
+                          {sub.title}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-          {task.tags.length > 0 && (
-            <div className="sm:w-48 rounded-xl bg-warm-50 p-4">
-              <p className="text-xs font-bold text-gray-900 mb-2">Tags</p>
-              <div className="flex flex-wrap gap-1.5">
-                {task.tags.map((tag) => (
-                  <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-pw-50 border border-pw-100 px-2.5 py-0.5 text-[10px] font-semibold text-pw-600">
-                    <Tag className="h-2.5 w-2.5" />
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              {task.tags.length > 0 && (
+                <div className="sm:w-48 rounded-xl bg-warm-50 p-4">
+                  <p className="text-xs font-bold text-gray-900 mb-2">Tags</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {task.tags.map((tag) => (
+                      <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-pw-50 border border-pw-100 px-2.5 py-0.5 text-[10px] font-semibold text-pw-600">
+                        <Tag className="h-2.5 w-2.5" />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -247,7 +416,7 @@ function TaskDetailPanel({ task, onClose }: { task: Task; onClose: () => void })
 
 /* ── Task Timeline ── */
 
-function TaskTimeline({ tasks }: { tasks: Task[] }) {
+function TaskTimeline({ tasks, projectId, userRole }: { tasks: Task[]; projectId: string; userRole: UserRole }) {
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
   const maxWeek = Math.max(...tasks.map((t) => (t.start_week ? 1 : 1) + t.duration_weeks), 8);
   const weeks = Array.from({ length: maxWeek }, (_, i) => i + 1);
@@ -331,7 +500,7 @@ function TaskTimeline({ tasks }: { tasks: Task[] }) {
                 </div>
 
                 {isSelected && (
-                  <TaskDetailPanel task={task} onClose={() => setSelectedTaskId(null)} />
+                  <TaskDetailPanel task={task} onClose={() => setSelectedTaskId(null)} projectId={projectId} userRole={userRole} />
                 )}
               </div>
             );
@@ -345,16 +514,231 @@ function TaskTimeline({ tasks }: { tasks: Task[] }) {
 /* ── Ideas Panel ── */
 
 function ideaStatusConfig(status: IdeaStatus) {
-  const map = {
-    nouvelle: { emoji: '✨', bg: 'bg-amber-50/60', border: 'border-amber-200', badgeBg: 'bg-amber-100', badgeText: 'text-amber-700', label: 'Nouvelle', glow: '' },
-    en_revue: { emoji: '🔍', bg: 'bg-sky-50/60',   border: 'border-sky-200',   badgeBg: 'bg-sky-100',   badgeText: 'text-sky-700',   label: 'En revue', glow: '' },
-    acceptée: { emoji: '🎉', bg: 'bg-green-50/60', border: 'border-green-200', badgeBg: 'bg-green-100', badgeText: 'text-green-700', label: 'Acceptée', glow: 'shadow-sm shadow-green-200' },
-    refusée:  { emoji: '💡', bg: 'bg-warm-50/60',  border: 'border-warm-200',  badgeBg: 'bg-warm-100',  badgeText: 'text-gray-600',  label: 'Notée',    glow: '' },
+  const map: Record<IdeaStatus, { icon: LucideIcon; iconColor: string; bg: string; border: string; badgeBg: string; badgeText: string; label: string; glow: string }> = {
+    nouvelle: { icon: Sparkles,     iconColor: 'text-amber-500', bg: 'bg-amber-50/60', border: 'border-amber-200', badgeBg: 'bg-amber-100', badgeText: 'text-amber-700', label: 'Nouvelle', glow: '' },
+    en_revue: { icon: Search,       iconColor: 'text-sky-500',   bg: 'bg-sky-50/60',   border: 'border-sky-200',   badgeBg: 'bg-sky-100',   badgeText: 'text-sky-700',   label: 'En revue', glow: '' },
+    acceptée: { icon: CheckCircle2,  iconColor: 'text-green-500', bg: 'bg-green-50/60', border: 'border-green-200', badgeBg: 'bg-green-100', badgeText: 'text-green-700', label: 'Acceptée', glow: 'shadow-sm shadow-green-200' },
+    refusée:  { icon: XCircle,      iconColor: 'text-gray-400',  bg: 'bg-warm-50/60',  border: 'border-warm-200',  badgeBg: 'bg-warm-100',  badgeText: 'text-gray-600',  label: 'Notée',    glow: '' },
   };
   return map[status] ?? map.nouvelle;
 }
 
-function IdeasPanel({ ideas, projectId }: { ideas: Idea[]; projectId: string }) {
+function getNextStatuses(status: IdeaStatus): { value: IdeaStatus; label: string; color: string }[] {
+  const map: Record<string, { value: IdeaStatus; label: string; color: string }[]> = {
+    nouvelle: [{ value: 'en_revue', label: 'Mettre en revue', color: 'bg-sky-500 hover:bg-sky-600' }],
+    en_revue: [
+      { value: 'acceptée', label: 'Accepter', color: 'bg-green-500 hover:bg-green-600' },
+      { value: 'refusée', label: 'Refuser', color: 'bg-red-400 hover:bg-red-500' },
+    ],
+  };
+  return map[status] ?? [];
+}
+
+function IdeaCard({ idea, projectId, userRole }: { idea: Idea; projectId: string; userRole: UserRole }) {
+  const [isPending, startTransition] = useTransition();
+  const [feedback, setFeedback] = useState<string | null>(null);
+  const [showPrep, setShowPrep] = useState(false);
+  const [prepForm, setPrepForm] = useState({
+    start_date: idea.start_date ?? '',
+    end_date: idea.end_date ?? '',
+    priority: idea.priority ?? '',
+    duration_weeks: idea.duration_weeks?.toString() ?? '',
+  });
+  const router = useRouter();
+  const cfg = ideaStatusConfig(idea.status);
+  const nextStatuses = userRole === 'superadmin' ? getNextStatuses(idea.status) : [];
+
+  function handleStatusChange(newStatus: IdeaStatus) {
+    setFeedback(null);
+    startTransition(async () => {
+      const result = await updateIdeaStatus(idea.id, newStatus, projectId);
+      if ('error' in result) {
+        setFeedback(result.error);
+      } else {
+        if (result.taskCreated) {
+          setFeedback('Idée acceptée — tâche créée !');
+        }
+        router.refresh();
+      }
+    });
+  }
+
+  function handleSavePrep() {
+    setFeedback(null);
+    startTransition(async () => {
+      const result = await updateIdeaPrepFields(idea.id, projectId, {
+        start_date: prepForm.start_date || undefined,
+        end_date: prepForm.end_date || undefined,
+        priority: (prepForm.priority as TaskPriority) || undefined,
+        duration_weeks: prepForm.duration_weeks ? Number(prepForm.duration_weeks) : undefined,
+      });
+      if ('error' in result) {
+        setFeedback(result.error);
+      } else {
+        setFeedback('Préparation enregistrée.');
+        setShowPrep(false);
+        router.refresh();
+      }
+    });
+  }
+
+  const isSuperadmin = userRole === 'superadmin';
+  const canEditPrep = isSuperadmin && (idea.status === 'en_revue' || idea.status === 'nouvelle');
+
+  return (
+    <div
+      className={cn(
+        'rounded-xl border-2 p-4 flex flex-col gap-3 transition-all hover:scale-[1.005]',
+        cfg.bg, cfg.border, cfg.glow
+      )}
+    >
+      <div className="flex items-center gap-4">
+        <div className="h-9 w-9 rounded-lg bg-white/70 flex items-center justify-center shrink-0">
+              <cfg.icon className={cn('h-5 w-5', cfg.iconColor)} />
+            </div>
+        {idea.author && (
+          <div
+            className="h-9 w-9 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0"
+            style={{ backgroundColor: idea.author.avatar_color }}
+          >
+            {idea.author.initials}
+          </div>
+        )}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold text-gray-900 truncate">{idea.title}</p>
+          <p className="text-[11px] text-gray-400 mt-0.5">
+            {idea.author?.full_name} · {formatDate(idea.created_at)}
+          </p>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          {canEditPrep && (
+            <button
+              onClick={() => setShowPrep(!showPrep)}
+              className="h-7 w-7 rounded-lg bg-white/70 border border-warm-200 flex items-center justify-center text-gray-400 hover:text-pw-600 hover:border-pw-300 transition-all"
+              title="Préparer la tâche"
+            >
+              <Pencil className="h-3 w-3" />
+            </button>
+          )}
+          <span className={cn('inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider', cfg.badgeBg, cfg.badgeText)}>
+            {cfg.label}
+          </span>
+        </div>
+      </div>
+
+      {showPrep && (
+        <div className="ml-12 rounded-xl bg-white border border-warm-200 p-4 space-y-3">
+          <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Préparation tâche</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-[11px] font-medium text-gray-600 mb-1">Date début</label>
+              <input
+                type="date"
+                value={prepForm.start_date}
+                onChange={(e) => setPrepForm((p) => ({ ...p, start_date: e.target.value }))}
+                className="w-full rounded-lg border border-warm-200 px-2.5 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-medium text-gray-600 mb-1">Date fin</label>
+              <input
+                type="date"
+                value={prepForm.end_date}
+                onChange={(e) => setPrepForm((p) => ({ ...p, end_date: e.target.value }))}
+                className="w-full rounded-lg border border-warm-200 px-2.5 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-[11px] font-medium text-gray-600 mb-1">Priorité</label>
+              <select
+                value={prepForm.priority}
+                onChange={(e) => setPrepForm((p) => ({ ...p, priority: e.target.value }))}
+                className="w-full rounded-lg border border-warm-200 px-2.5 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+              >
+                <option value="">—</option>
+                <option value="haute">Haute</option>
+                <option value="moyenne">Moyenne</option>
+                <option value="basse">Basse</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[11px] font-medium text-gray-600 mb-1">Durée (semaines)</label>
+              <input
+                type="number"
+                min={1}
+                value={prepForm.duration_weeks}
+                onChange={(e) => setPrepForm((p) => ({ ...p, duration_weeks: e.target.value }))}
+                className="w-full rounded-lg border border-warm-200 px-2.5 py-1.5 text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-pw-300 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleSavePrep}
+              disabled={isPending}
+              className="rounded-lg bg-pw-500 px-3 py-1.5 text-[11px] font-bold text-white hover:bg-pw-600 transition-all disabled:opacity-50"
+            >
+              {isPending ? '...' : 'Enregistrer'}
+            </button>
+            <button
+              onClick={() => setShowPrep(false)}
+              className="rounded-lg border border-warm-200 px-3 py-1.5 text-[11px] font-medium text-gray-500 hover:bg-warm-50 transition-all"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!showPrep && (idea.priority || idea.start_date || idea.duration_weeks) && (
+        <div className="flex items-center gap-3 pl-12 flex-wrap">
+          {idea.priority && (
+            <span className={cn(
+              'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold',
+              idea.priority === 'haute' ? 'bg-red-50 text-red-600' :
+              idea.priority === 'moyenne' ? 'bg-amber-50 text-amber-600' :
+              'bg-green-50 text-green-600'
+            )}>
+              {idea.priority === 'haute' ? '↑' : idea.priority === 'basse' ? '↓' : '−'} {idea.priority.charAt(0).toUpperCase() + idea.priority.slice(1)}
+            </span>
+          )}
+          {idea.start_date && (
+            <span className="text-[10px] text-gray-400">
+              {formatDate(idea.start_date)}{idea.end_date ? ` → ${formatDate(idea.end_date)}` : ''}
+            </span>
+          )}
+          {idea.duration_weeks && (
+            <span className="text-[10px] text-gray-400">{idea.duration_weeks}s</span>
+          )}
+        </div>
+      )}
+
+      {nextStatuses.length > 0 && (
+        <div className="flex items-center gap-2 pl-12">
+          {nextStatuses.map((ns) => (
+            <button
+              key={ns.value}
+              onClick={() => handleStatusChange(ns.value)}
+              disabled={isPending}
+              className={cn(
+                'rounded-lg px-3 py-1.5 text-[11px] font-bold text-white transition-all disabled:opacity-50',
+                ns.color
+              )}
+            >
+              {isPending ? '...' : ns.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {feedback && (
+        <p className="text-[11px] font-medium text-green-600 pl-12">{feedback}</p>
+      )}
+    </div>
+  );
+}
+
+function IdeasPanel({ ideas, projectId, userRole }: { ideas: Idea[]; projectId: string; userRole: UserRole }) {
   const accepted = ideas.filter((i) => i.status === 'acceptée').length;
   const reviewing = ideas.filter((i) => i.status === 'en_revue').length;
   const newIdeas = ideas.filter((i) => i.status === 'nouvelle').length;
@@ -375,59 +759,31 @@ function IdeasPanel({ ideas, projectId }: { ideas: Idea[]; projectId: string }) 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
         <div className="rounded-xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 p-3 text-center">
           <p className="text-2xl font-extrabold text-green-700">{accepted}</p>
-          <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider mt-0.5">🎉 Acceptées</p>
+          <p className="text-[10px] font-bold text-green-600 uppercase tracking-wider mt-0.5 flex items-center justify-center gap-1"><CheckCircle2 className="h-3 w-3" /> Acceptées</p>
         </div>
         <div className="rounded-xl bg-gradient-to-br from-sky-50 to-sky-100 border border-sky-200 p-3 text-center">
           <p className="text-2xl font-extrabold text-sky-700">{reviewing}</p>
-          <p className="text-[10px] font-bold text-sky-600 uppercase tracking-wider mt-0.5">🔍 En revue</p>
+          <p className="text-[10px] font-bold text-sky-600 uppercase tracking-wider mt-0.5 flex items-center justify-center gap-1"><Search className="h-3 w-3" /> En revue</p>
         </div>
         <div className="rounded-xl bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 p-3 text-center">
           <p className="text-2xl font-extrabold text-amber-700">{newIdeas}</p>
-          <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mt-0.5">✨ Nouvelles</p>
+          <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mt-0.5 flex items-center justify-center gap-1"><Sparkles className="h-3 w-3" /> Nouvelles</p>
         </div>
         <div className="rounded-xl bg-gradient-to-br from-pw-50 to-pw-100 border border-pw-200 p-3 text-center">
           <p className="text-2xl font-extrabold text-pw-700">{acceptRate}%</p>
-          <p className="text-[10px] font-bold text-pw-600 uppercase tracking-wider mt-0.5">📊 Taux</p>
+          <p className="text-[10px] font-bold text-pw-600 uppercase tracking-wider mt-0.5 flex items-center justify-center gap-1"><BarChart3 className="h-3 w-3" /> Taux</p>
         </div>
       </div>
 
       <div className="space-y-3 mb-5">
-        {ideas.map((idea) => {
-          const cfg = ideaStatusConfig(idea.status);
-          return (
-            <div
-              key={idea.id}
-              className={cn(
-                'rounded-xl border-2 p-4 flex items-center gap-4 transition-all hover:scale-[1.005]',
-                cfg.bg, cfg.border, cfg.glow
-              )}
-            >
-              <div className="text-2xl shrink-0">{cfg.emoji}</div>
-              {idea.author && (
-                <div
-                  className="h-9 w-9 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0"
-                  style={{ backgroundColor: idea.author.avatar_color }}
-                >
-                  {idea.author.initials}
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 truncate">{idea.title}</p>
-                <p className="text-[11px] text-gray-400 mt-0.5">
-                  {idea.author?.full_name} · {formatDate(idea.created_at)}
-                </p>
-              </div>
-              <span className={cn('inline-flex items-center rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider shrink-0', cfg.badgeBg, cfg.badgeText)}>
-                {cfg.label}
-              </span>
-            </div>
-          );
-        })}
+        {ideas.map((idea) => (
+          <IdeaCard key={idea.id} idea={idea} projectId={projectId} userRole={userRole} />
+        ))}
       </div>
 
       {/* CTA */}
       <div className="mt-5 rounded-xl bg-gradient-to-r from-amber-50 via-pw-50 to-sky-50 border-2 border-dashed border-amber-200 p-5 text-center">
-        <p className="text-3xl mb-2">💡</p>
+        <div className="flex justify-center mb-2"><Lightbulb className="h-8 w-8 text-amber-400" /></div>
         <p className="text-sm font-bold text-gray-900 mb-1">Vous avez une idée ?</p>
         <p className="text-xs text-gray-500 mb-4">Partagez-la avec votre équipe</p>
         <form action={submitIdea} className="flex items-center gap-3 max-w-md mx-auto">
@@ -595,12 +951,12 @@ const docTypeConfig: Record<string, { color: string; bg: string }> = {
   image: { color: 'text-pink-500',   bg: 'bg-pink-50' },
 };
 
-const catConfig: Record<string, { label: string; emoji: string; bg: string; border: string; text: string }> = {
-  livrable:      { label: 'Livrable',      emoji: '📦', bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700' },
-  spécification: { label: 'Spécification', emoji: '📋', bg: 'bg-pw-50',     border: 'border-pw-200',     text: 'text-pw-700' },
-  design:        { label: 'Design',        emoji: '🎨', bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
-  rapport:       { label: 'Rapport',       emoji: '📊', bg: 'bg-amber-50',  border: 'border-amber-200',  text: 'text-amber-700' },
-  facture:       { label: 'Facture',       emoji: '🧾', bg: 'bg-sky-50',    border: 'border-sky-200',    text: 'text-sky-700' },
+const catConfig: Record<string, { label: string; icon: LucideIcon; bg: string; border: string; text: string }> = {
+  livrable:      { label: 'Livrable',      icon: Package,       bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-700' },
+  spécification: { label: 'Spécification', icon: ClipboardList, bg: 'bg-pw-50',     border: 'border-pw-200',     text: 'text-pw-700' },
+  design:        { label: 'Design',        icon: Palette,       bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
+  rapport:       { label: 'Rapport',       icon: BarChart3,     bg: 'bg-amber-50',  border: 'border-amber-200',  text: 'text-amber-700' },
+  facture:       { label: 'Facture',       icon: Receipt,       bg: 'bg-sky-50',    border: 'border-sky-200',    text: 'text-sky-700' },
 };
 
 function DocumentsTab({ documents }: { documents: Document[] }) {
@@ -648,6 +1004,7 @@ interface ProjectDetailClientProps {
   ideas: Idea[];
   messages: ProjectMessage[];
   documents: Document[];
+  userRole: UserRole;
 }
 
 export default function ProjectDetailClient({
@@ -657,6 +1014,7 @@ export default function ProjectDetailClient({
   ideas,
   messages,
   documents,
+  userRole,
 }: ProjectDetailClientProps) {
   const [activeTab, setActiveTab] = useState<TabKey>('tasks');
 
@@ -688,7 +1046,7 @@ export default function ProjectDetailClient({
         </div>
         {project.satisfaction_score !== null && (
           <div className="ml-auto hidden sm:flex items-center gap-2">
-            <span className="text-2xl">{satisfactionEmoji(project.satisfaction_score)}</span>
+            <Star className={cn('h-6 w-6', satisfactionColor(project.satisfaction_score))} />
             <div>
               <span className="text-lg font-extrabold text-gray-900">{project.satisfaction_score}</span>
               <span className="text-xs text-gray-400 ml-1">/5</span>
@@ -738,8 +1096,8 @@ export default function ProjectDetailClient({
       </div>
 
       {/* ROW 3 — Dynamic section */}
-      {activeTab === 'tasks'     && <TaskTimeline tasks={tasks} />}
-      {activeTab === 'ideas'     && <IdeasPanel ideas={ideas} projectId={project.id} />}
+      {activeTab === 'tasks'     && <TaskTimeline tasks={tasks} projectId={project.id} userRole={userRole} />}
+      {activeTab === 'ideas'     && <IdeasPanel ideas={ideas} projectId={project.id} userRole={userRole} />}
       {activeTab === 'messages'  && <MessagesTab messages={messages} projectId={project.id} />}
       {activeTab === 'sprints'   && <SprintsTab sprints={sprints} />}
       {activeTab === 'documents' && <DocumentsTab documents={documents} />}

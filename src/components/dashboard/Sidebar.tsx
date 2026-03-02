@@ -8,7 +8,7 @@ import { Home, FolderKanban, FileText, MessageSquare, Settings } from 'lucide-re
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { icon: Home, label: 'Accueil', path: '/dashboard' },
+  { icon: Home, label: 'Dashboard', path: '/dashboard' },
   { icon: FolderKanban, label: 'Projets', path: '/projets' },
   { icon: FileText, label: 'Documents', path: '/documents' },
   { icon: MessageSquare, label: 'Messages', path: '/messages' },
