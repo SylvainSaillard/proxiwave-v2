@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaStream | Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-spark-gradient {
+            background: linear-gradient(135deg, #3525cd 0%, #8127cf 100%);
+        }
+        .soft-glow-primary {
+            box-shadow: 0 10px 25px -5px rgba(53, 37, 205, 0.1), 0 8px 10px -6px rgba(53, 37, 205, 0.05);
+        }
+        .soft-glow-secondary {
+            box-shadow: 0 10px 25px -5px rgba(129, 39, 207, 0.2), 0 8px 10px -6px rgba(129, 39, 207, 0.1);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#faf8ff",
+                        "surface-bright": "#faf8ff",
+                        "on-surface-variant": "#464555",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-dim": "#d2d9f4",
+                        "secondary": "#8127cf",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "primary": "#3525cd",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#00534a",
+                        "secondary-fixed": "#f0dbff",
+                        "primary-container": "#4f46e5",
+                        "tertiary-fixed": "#71f8e4",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f2f3ff",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "surface-container-high": "#e2e7ff",
+                        "outline": "#777587",
+                        "secondary-container": "#9c48ea",
+                        "tertiary-container": "#006d62",
+                        "inverse-surface": "#283044",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#131b2e",
+                        "on-secondary-fixed": "#2c0051",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eaedff",
+                        "primary-fixed": "#e2dfff",
+                        "on-primary-fixed": "#0f0069",
+                        "on-tertiary-fixed": "#00201c",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-primary-container": "#dad7ff",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c7c4d8",
+                        "surface-container-highest": "#dae2fd",
+                        "on-secondary-container": "#fffbff",
+                        "surface-tint": "#4d44e3",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-background": "#131b2e",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#dae2fd",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-tertiary-container": "#69f1de",
+                        "background": "#faf8ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-desktop": "48px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-40 w-full flex justify-between items-center px-margin-desktop h-16 bg-surface border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">IdeaStream</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center bg-surface-container px-sm py-xs rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-body-sm text-on-surface-variant w-48" placeholder="Search ideas..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-xs rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<button class="p-xs rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="military_tech">military_tech</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary">
+<img alt="User profile" class="h-full w-full object-cover" data-alt="A professional headshot of a creative professional in a bright, high-key office environment. The subject has a warm, confident expression, styled with modern glasses. The lighting is soft and ambient, emphasizing a clean and high-contrast professional aesthetic consistent with a modern tech brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM_S14R_IJTxgQzcl0-aVw0O1uPIao1bShagGuxkCUTDQA2skXaH1lRj1OV97bHGshNjceLi_0c_IzP5ORQxBIvN1oorAw9GraPORXpRp3ca_teJv0jAVekQUAi70aaapx99b6JqtQkdvA6xVclV6OrOoIImkjS4Q2qGsJVkT0UWR2yExGrZH9JF8eGnCARojfBZfvQ17VkXoLyMXsMWPEN-ycgH63TdpLLJRzkIhHRZBnJL3prw7G7Cr6gAPPDAsNLqpTkJzQVkE"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-screen pt-16">
+<!-- SideNavBar -->
+<aside class="hidden md:flex h-[calc(100vh-64px)] sticky top-16 left-0 w-64 flex-col bg-surface-container-low shadow-sm p-md gap-sm">
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-sm p-sm bg-secondary-fixed text-on-secondary-fixed rounded-xl font-bold transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-label-lg text-label-lg">Idea Wall</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-lg text-label-lg">Projects</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high hover:translate-x-1 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-lg text-label-lg">Team</span>
+</a>
+<div class="mt-md">
+<button class="w-full py-sm bg-secondary text-white font-bold rounded-xl flex items-center justify-center gap-xs soft-glow-secondary hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span class="font-label-lg text-label-lg">New Idea</span>
+</button>
+</div>
+</nav>
+<div class="flex flex-col gap-xs border-t border-outline-variant pt-md">
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span class="font-label-lg text-label-lg">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow p-md md:p-lg space-y-lg max-w-7xl mx-auto">
+<!-- Hero Area -->
+<section class="relative bg-spark-gradient rounded-3xl p-lg text-white overflow-hidden soft-glow-primary">
+<div class="absolute top-0 right-0 p-lg opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[200px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="relative z-10 max-w-2xl space-y-md">
+<h1 class="font-display-lg text-display-lg leading-tight">Spark a Change</h1>
+<p class="font-body-lg text-body-lg opacity-90">Every great breakthrough starts with a single, messy thought. What's on your mind today? Let's turn that spark into a flame.</p>
+<div class="pt-sm">
+<button class="bg-white text-primary px-lg py-md rounded-full font-bold flex items-center gap-sm hover:bg-surface-container-lowest transition-all hover:translate-y-[-2px] soft-glow-primary">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-lg text-label-lg">New Idea</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Stats & Progress Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Innovation Stats Card -->
+<div class="md:col-span-8 bg-surface-container-lowest p-md rounded-3xl shadow-sm border border-outline-variant flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+                            Innovation Journey
+                        </h2>
+<div class="flex items-center gap-xs bg-tertiary-fixed text-on-tertiary-fixed px-sm py-xs rounded-full">
+<span class="material-symbols-outlined text-[18px]" data-icon="trending_up">trending_up</span>
+<span class="font-label-md text-label-md">Top 5%</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-md">
+<div class="space-y-xs">
+<span class="font-label-md text-label-md text-on-surface-variant">Current Level</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-lg text-display-lg-mobile text-primary">14</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant">Master Tinkerer</span>
+</div>
+</div>
+<div class="sm:col-span-2 space-y-sm">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface-variant">XP Progress (2,450 / 3,000)</span>
+<span class="font-label-md text-label-md text-secondary">82%</span>
+</div>
+<div class="h-[8px] w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[82%] rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-md pt-xs">
+<div class="flex items-center gap-sm bg-surface-container-low p-sm rounded-2xl border border-outline-variant flex-1 min-w-[140px]">
+<div class="h-10 w-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Streak</p>
+<p class="font-bold text-lg">12 Days</p>
+</div>
+</div>
+<div class="flex items-center gap-sm bg-surface-container-low p-sm rounded-2xl border border-outline-variant flex-1 min-w-[140px]">
+<div class="h-10 w-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ideas</p>
+<p class="font-bold text-lg">48 Total</p>
+</div>
+</div>
+<div class="flex items-center gap-sm bg-surface-container-low p-sm rounded-2xl border border-outline-variant flex-1 min-w-[140px]">
+<div class="h-10 w-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Badges</p>
+<p class="font-bold text-lg">9 Earned</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Achievements Card -->
+<div class="md:col-span-4 bg-surface-container-lowest p-md rounded-3xl shadow-sm border border-outline-variant flex flex-col gap-md">
+<h2 class="font-headline-md text-headline-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="emoji_events">emoji_events</span>
+                        Achievements
+                    </h2>
+<ul class="space-y-sm">
+<li class="flex items-center gap-sm p-xs hover:bg-surface-container transition-colors rounded-xl">
+<div class="h-10 w-10 shrink-0 rounded-full bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary text-[20px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">First Implementation</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Idea #402 moved to production</p>
+</div>
+</li>
+<li class="flex items-center gap-sm p-xs hover:bg-surface-container transition-colors rounded-xl">
+<div class="h-10 w-10 shrink-0 rounded-full bg-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="campaign">campaign</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Thought Leader</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Gained 500 upvotes this week</p>
+</div>
+</li>
+<li class="flex items-center gap-sm p-xs hover:bg-surface-container transition-colors rounded-xl">
+<div class="h-10 w-10 shrink-0 rounded-full bg-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="handshake">handshake</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Team Player</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Collaborated on 10 ideas</p>
+</div>
+</li>
+</ul>
+<button class="mt-auto text-primary font-bold text-center py-xs hover:bg-surface-container rounded-lg transition-colors">View All Badges</button>
+</div>
+</section>
+<!-- Trending Ideas Section -->
+<section class="space-y-md">
+<div class="flex justify-between items-end px-xs">
+<div>
+<h2 class="font-headline-lg text-headline-lg">Trending Ideas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Concepts gaining momentum in the community</p>
+</div>
+<button class="text-secondary font-bold flex items-center gap-xs">
+                        View Wall <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter overflow-x-auto pb-md">
+<!-- Idea Card 1 -->
+<article class="bg-surface-container-lowest p-md rounded-2xl border-l-4 border-tertiary shadow-sm hover:shadow-md transition-shadow min-w-[300px]">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-xs">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-xs py-[2px] rounded font-label-sm text-label-sm">Sustainability</span>
+<span class="bg-surface-container-high text-on-surface-variant px-xs py-[2px] rounded font-label-sm text-label-sm">High Impact</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Closed-Loop Logistics Hub</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md line-clamp-2">Implementing a reusable packaging ecosystem for last-mile delivery to reduce carbon footprint by 40%.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-md">
+<div class="flex -space-x-2">
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User 1" class="h-full w-full object-cover" data-alt="A portrait of a young female designer with a vibrant, artistic background. The lighting is colorful yet professional, with teal and violet accents. The style is modern and clean, fitting a tech-savvy creative platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTY6fNpao7-ESRuBjgzkKdJXIDcpVDlPyqdqmsDWAtpZewXjJUAT70fhRqlvNc5yfMDAx2wvYcJSYr0n6b-yWL_clyvX8nyh0xNpcUtRI7q6fRknRLVxtjFxcVZwy8Ri1jruCjhfOpBlhOVauLcueDoT_NQ8-U4-Cw13hU2xe8mfhRqAOmW3MhBxUsmI3wXRdGVJxTRefy9QjBmCXXFhN8DE2D5dKfBdKRmJaL1OGM4ZaBusdTXZAI37yBNJs4a-R4lVgV6hkEajE"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User 2" class="h-full w-full object-cover" data-alt="A portrait of a male tech lead in a bright, modern office space. The image is high-contrast with soft, professional lighting. The aesthetic is clean and corporate yet warm, consistent with collaborative software designs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKxulCPGwRJ-atmLgAMBin5Mxlv9cl-s7JutQB9vOKCvMobQkqEyubZkEMbaX0EtPU8vFrrrGgUQCgUMSbUL3iQtcfeUF15h42FJZ7H8-8M0glhHGHQpYO2rEf-bwgMtITLWsq3BLfgR_TNO3Ns4_KWWXswLPwIFHrhL9QHm-KhyHRNV0vBOUKREIJ5fmH4SpJ-aMjgLNb-utnlWKqaEqAdQu8eRvU37QhPzH8V2f8GAnuh8lr_HB1mTwxX8055NjvwvYWPu3Ilbk"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-primary text-[10px] text-white flex items-center justify-center font-bold">+5</div>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span> 142</span>
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span> 28</span>
+</div>
+</div>
+</article>
+<!-- Idea Card 2 -->
+<article class="bg-surface-container-lowest p-md rounded-2xl border-l-4 border-secondary shadow-sm hover:shadow-md transition-shadow min-w-[300px]">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-xs">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-xs py-[2px] rounded font-label-sm text-label-sm">Gamification</span>
+<span class="bg-surface-container-high text-on-surface-variant px-xs py-[2px] rounded font-label-sm text-label-sm">Internal Tool</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Skill-Swapping Marketplace</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md line-clamp-2">A platform for employees to trade hours of their expertise (e.g., Coding for Design) across departments.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-md">
+<div class="flex -space-x-2">
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User 3" class="h-full w-full object-cover" data-alt="A portrait of a male professional in a modern, brightly lit coworking space. High-key lighting and a palette of indigo and whites. The image feels energetic and focused on modern collaboration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW-lh10rb1U0nnt-FTZeVjffNP5TerWVVx-W8wx9oY_pWULNeANk4rCtjMk62kviZ5oVWcpvdTx2-2E0wruAur1Yn2Gl_fY_ireIzuTLBbCJWO0J4AmAlgUkXptDKBie68KEDl4Xn5dyJLX98T1OYe9Gx2p3YECNDxfCNH-icmVgGQew3vTxQkjAiHnp3I3O5VnaawJyIorvOWQ6T2NP2nog0m0xEZrLOdjSm-2WRf6AYmS0WBpUQnnfCS4Vt8cuue2YlbuCL5ug8"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-primary text-[10px] text-white flex items-center justify-center font-bold">+12</div>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span> 89</span>
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span> 42</span>
+</div>
+</div>
+</article>
+<!-- Idea Card 3 -->
+<article class="bg-surface-container-lowest p-md rounded-2xl border-l-4 border-primary shadow-sm hover:shadow-md transition-shadow min-w-[300px]">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-xs">
+<span class="bg-primary-fixed text-on-primary-fixed px-xs py-[2px] rounded font-label-sm text-label-sm">AI Assist</span>
+<span class="bg-surface-container-high text-on-surface-variant px-xs py-[2px] rounded font-label-sm text-label-sm">New Tech</span>
+</div>
+<button class="text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<h3 class="font-headline-md text-headline-md mb-xs">Neural Sync Design Review</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md line-clamp-2">Using generative AI to simulate user feedback sessions based on historical persona data.</p>
+<div class="flex justify-between items-center border-t border-outline-variant pt-md">
+<div class="flex -space-x-2">
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="User 4" class="h-full w-full object-cover" data-alt="A portrait of a creative professional woman in a minimalist white studio. High-key lighting, soft shadows, and a clean, modern aesthetic with indigo accents. The subject looks thoughtful and technologically savvy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLedoJ31lAeTHyzqBGZgLx9am5nDq42lExCGjJEXcVm8pWf0_aO12z1H9MiSHARPPKYV-7OsMFQMKm9aBvsuj9i8-yBRLJ3QDM34tUDTJJReOqyepBysrIM19l9kQKMlwLIYxRvPS94zliovBs-w1zJW8FV5qg7wf-R3Nf_bMuS0seLc-icL0VGJvsHoEhnKiHeNoEW3WBey_BMZ_0GHqXnTL17FRTnNypXjOS9Czjr1EWUbOmiqjxXxy4aEsxHTFQ_YHsVjqXFno"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-surface bg-primary text-[10px] text-white flex items-center justify-center font-bold">+2</div>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="thumb_up">thumb_up</span> 210</span>
+<span class="flex items-center gap-xs font-label-md text-label-md"><span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span> 15</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Community Pulse Feed -->
+<section class="space-y-md">
+<h2 class="font-headline-lg text-headline-lg px-xs">Community Pulse</h2>
+<div class="bg-surface-container-lowest rounded-3xl border border-outline-variant divide-y divide-outline-variant">
+<div class="p-md flex gap-md">
+<div class="shrink-0 h-10 w-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div class="flex-grow space-y-xs">
+<p class="font-body-md text-body-md"><span class="font-bold">Team Alpha</span> just reached a <span class="text-secondary font-bold">10-day collaboration streak</span>! 🔥</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 minutes ago</p>
+</div>
+</div>
+<div class="p-md flex gap-md">
+<div class="shrink-0 h-10 w-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="rocket">rocket</span>
+</div>
+<div class="flex-grow space-y-xs">
+<p class="font-body-md text-body-md"><span class="font-bold">Design Sprint 24</span> is now live in the <span class="text-primary font-bold underline decoration-primary-container">Strategy Lab</span>.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">45 minutes ago</p>
+</div>
+</div>
+<div class="p-md flex gap-md">
+<div class="shrink-0 h-10 w-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<div class="flex-grow space-y-xs">
+<p class="font-body-md text-body-md"><span class="font-bold">Sarah Jenkins</span> commented on <span class="italic">"Vertical Farming Pods"</span>: "This could definitely scale to our roof deck!"</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">1 hour ago</p>
+</div>
+</div>
+<div class="p-md text-center">
+<button class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors">Show more activity</button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Contextual FAB (Mobile Only) -->
+<button class="md:hidden fixed bottom-md right-md h-14 w-14 rounded-full bg-secondary text-white flex items-center justify-center shadow-lg soft-glow-secondary z-50">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

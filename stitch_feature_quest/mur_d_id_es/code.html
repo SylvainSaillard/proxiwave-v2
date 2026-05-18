@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaStream - Idea Wall</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#71f8e4",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "surface-container": "#eaedff",
+                        "inverse-surface": "#283044",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f2f3ff",
+                        "surface": "#faf8ff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-surface": "#131b2e",
+                        "on-surface-variant": "#464555",
+                        "primary-fixed": "#e2dfff",
+                        "on-background": "#131b2e",
+                        "outline": "#777587",
+                        "tertiary": "#00534a",
+                        "surface-container-high": "#e2e7ff",
+                        "primary-container": "#4f46e5",
+                        "primary": "#3525cd",
+                        "on-secondary-container": "#fffbff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#9c48ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-tertiary-fixed": "#00201c",
+                        "background": "#faf8ff",
+                        "surface-dim": "#d2d9f4",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#dad7ff",
+                        "secondary": "#8127cf",
+                        "surface-bright": "#faf8ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-tertiary-container": "#69f1de",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "surface-tint": "#4d44e3",
+                        "on-primary-fixed": "#000069",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "inverse-primary": "#c3c0ff",
+                        "tertiary-container": "#006d62",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#dae2fd",
+                        "outline-variant": "#c7c4d8",
+                        "secondary-fixed": "#f0dbff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "lg": "40px",
+                        "xl": "64px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+            color: #131b2e;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #faf8ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c7c4d8;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-40 bg-surface dark:bg-inverse-surface shadow-sm shadow-primary/5 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center gap-sm">
+<img alt="User Profile" class="w-8 h-8 rounded-full border-2 border-primary" data-alt="A professional close-up portrait of a creative individual with a bright, welcoming expression, set against a soft-focus modern studio background. The image is crisp with high-key lighting, maintaining the clean, modern aesthetic of the IdeaStream design system with subtle indigo and white tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAXLgXgVSF5uydJN8KefmVTDOS4v0vmgVF8X6Ax2Ob7Akc93rbuCWZphjfx_6_8dHMGtrZdP3LabXes_NOJLc3x1nprADaH6etxkftAyPmwAkLL4ka_eq35xMHMSPcxnsbyd9TZng0UOBsitYNi3FZa_gv5nnXEnD0BK5tBhPEkpVuh09mEzsukuxXucLrBumA5aNbVKheMohBELZoaUR3iWL6UBCMStrzj_zsaA6e6gWb-Oklou3A9x9t-wgPPFQJxbtWNevCk-Y"/>
+<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed-dim">IdeaStream</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-high transition-colors rounded-full Active:scale-95 duration-100">notifications</button>
+</div>
+</header>
+<main class="pt-20 pb-32 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Search & Filter Header -->
+<section class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div class="relative flex-1 max-w-2xl">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-white border border-outline-variant rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-body-md text-on-surface" placeholder="Search features, bugs, or brainstorms..." type="text"/>
+</div>
+<div class="flex items-center gap-sm overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
+<button class="whitespace-nowrap px-4 py-2 bg-primary text-on-primary rounded-full font-label-lg shadow-md hover:shadow-lg transition-all">All Ideas</button>
+<button class="whitespace-nowrap px-4 py-2 bg-surface-container-low text-on-surface-variant rounded-full font-label-lg border border-outline-variant hover:bg-surface-container-high transition-all">UI/UX</button>
+<button class="whitespace-nowrap px-4 py-2 bg-surface-container-low text-on-surface-variant rounded-full font-label-lg border border-outline-variant hover:bg-surface-container-high transition-all">Backend</button>
+<button class="whitespace-nowrap px-4 py-2 bg-surface-container-low text-on-surface-variant rounded-full font-label-lg border border-outline-variant hover:bg-surface-container-high transition-all">Mobile</button>
+</div>
+</div>
+</section>
+<!-- Idea Wall List View -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Idea Item 1 -->
+<article class="group bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-tertiary-container hover:shadow-xl hover:shadow-primary/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-md relative overflow-hidden">
+<div class="flex flex-col gap-xs flex-1">
+<div class="flex items-center gap-sm flex-wrap">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full font-label-md">UI/UX</span>
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-md">Approved</span>
+<span class="text-on-surface-variant font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">event_repeat</span> Sprint 24
+                        </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Real-time Collaborative Whiteboard</h3>
+<p class="text-on-surface-variant font-body-sm max-w-2xl line-clamp-1">Allow multiple users to sketch and sticky-note ideas simultaneously on a shared canvas.</p>
+</div>
+<div class="flex items-center gap-md self-end md:self-center">
+<div class="flex -space-x-3">
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a modern tech professional with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM52hcccDDwWeTaUFqUuFCOF09n3eKMlKmZxJzUsgoJa5EWORWYy26DUr1GFtJqYUSztH68qDDOpznw6cLSUHq3iZtAYZBrsSkBcGyhkh12FYK2-moPAYN6Ea4zpp9XwkNtxOmyYb4Nho0Q7tOa0REc9MkEH8hwH6nWsRc7x_1au2dqMaWnt2clJZeIcglTkIq6Yc_tX9aSIAywmIV0b3opjN3PYuzc2ZRTRlInsLt4aiE3h5FD3vuEYm2tj49mFvYY8hrdByPrn4"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a creative designer with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVs-zsQFFxXVwPGONWO0o_rDTV3-X-dqmzCRDQdovSwhrlGSMzU2-BLXsp6CpgcSuwKMubwrVzoC5BJr2vF2ZrHMPccmRmOs5C0OBN_zfvNhmhV1UqX9SCC8NMnBuj9yS1c6LAW6_tdFSmCfYhynNSF_fH9E--Y6w1JtH75Qf0kp7xtmZn0aQsnAbUAT7hmzsISLl1jgvS7HnjefOx2lY49_2xng7PS0Ko-EZdjMHL6fsxCrFj7hC7iqAxOM_RL-dFowu8bdm16zc"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a software engineer with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_VzYYswVVHJeJx90zHQwkm5uWYIJ6_D4OkKiovQjg1uBwtcTzeqlv05URKDhznlDhItLrZDfUTwQiCD1Mknvol9kvsSogpop5yA9pn-SfLTx4pnxf0FlAafQIaFCou9tFDN5r46Y0bOLs5ALbQ_G9A8DmUf6X0jEHR4mOTcphdMtOzwkJoJc-pqHYJB5bWSgxVw8PD25U9CWADUJwOnuxfDwRlRRmw_vd31gkPtxAKKvtVoSk-ORwzggzc788XrrC84qpldaP5bM"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-primary font-label-sm">+12</div>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">thumb_up</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">more_vert</button>
+</div>
+</article>
+<!-- Idea Item 2 -->
+<article class="group bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-secondary-container hover:shadow-xl hover:shadow-primary/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-md relative overflow-hidden">
+<div class="flex flex-col gap-xs flex-1">
+<div class="flex items-center gap-sm flex-wrap">
+<span class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded-full font-label-md">Backend</span>
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full font-label-md">Sandbox</span>
+<span class="text-outline font-label-md italic">Unassigned</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">AI-Driven Sentiment Analysis for Feedback</h3>
+<p class="text-on-surface-variant font-body-sm max-w-2xl line-clamp-1">Automatically categorize customer comments into positive, neutral, or negative categories using NLP.</p>
+</div>
+<div class="flex items-center gap-md self-end md:self-center">
+<div class="flex -space-x-3">
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a project manager with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcB3kporg7x_2xSEYCsB9gs-ldV4iXRNKLgOlkAWhgY6WubygrtchHvNGtrEx-1WmLc_D061OqVuJ9bmnrfKilC4YPdxB9gx-_-MVI2dagGyyDVIYP0ddOIDwbZHbtFv3SAb417Hd3rgm8tOah3XEpO_RwtOpMXDXTtU8mMExFpLk1e-AthKOas3ZAcab1vQPV8HrMSdqgAimo3Nscg8-2N-hqaJlcXXzfRb_XBBCxXltWiPyfCLtx9RK3QRy5lIz4pg1QmgvK7nE"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a researcher with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJwAgAu1SyJ0LIbTTeR6mZKTVprEtcE5yhDxn10Ev-XhpjI_6Tjz0FNu_qGW9ID_MyQvxxC1oqCmTBQQZ6Bs5R_YanMBV0hMHl0VXGCjA00GhrurZZejIm_Dwl-6OG3mmT9SSKXzTFOFQ1OF9DIrv4VlGk095yUlKfJxrZzoCHK61xdeodcJpDpxIkhIyrVjSEeqk8JC6e7YxX1n1RfvIjR4Xt8GE0qNxKBHjghSEe1Sqvlaz18NoMWm51PdtlC2vZu7G66e-7ZA4"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-primary font-label-sm">+5</div>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">thumb_up</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">more_vert</button>
+</div>
+</article>
+<!-- Idea Item 3 -->
+<article class="group bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-tertiary hover:shadow-xl hover:shadow-primary/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-md relative overflow-hidden">
+<div class="flex flex-col gap-xs flex-1">
+<div class="flex items-center gap-sm flex-wrap">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full font-label-md">Mobile</span>
+<span class="px-3 py-1 bg-on-tertiary-container text-tertiary rounded-full font-label-md">Shipped</span>
+<span class="text-on-surface-variant font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">event_repeat</span> Sprint 22
+                        </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Offline Cache for Mobile Ideation</h3>
+<p class="text-on-surface-variant font-body-sm max-w-2xl line-clamp-1">Ensure users can record ideas even without internet connectivity, syncing when back online.</p>
+</div>
+<div class="flex items-center gap-md self-end md:self-center">
+<div class="flex -space-x-3">
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a mobile developer with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBljsZjluZV2IM4qn25n5ezC5mqW_qs5stTBGzSNashplX0E6y-Mw8W5sctVrbPHFacBDJdvNaR7MWozMz0d0lp0DkcSLtFiaXdoJnNMr1f-w71alPItBFDXQ0yAYXz3Y_Wdm0SQyWKGVbYcNBN_BRz-IcX75GfSpZZttkLAO1_RdNSrNnGesbyAKonDCoi4Diofa07suU4GZWHvEJEtJDi_5mDlE9kkT08DsVJrOE5DwOFzwSisRAOd8J7CKz5GDkZ2fsDH98T_ko"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a product designer with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcK6YLJQo8v4qQyEfZq05S8H4Zs1vLmf8qXfp6xpqk0hMl0J7yQAxARYjAP-PRr9QafSktdGLCNBWbSt-sXmYu1MNe6D00QT0Lj2uou1ojznM2LYtqy6XqeHnE_NuofIXOxc7wkc4aI3hRja4foj-nwpcEK5Y8WFnffwLu4uySAE2quyl5wKy04bcG6cbc7Y5BWAVYy5ujr7dhb2rjah9bFWrhoQdWg_-f0XU6kjjps1VqlPMK43VEOoBS27FR1ND_ois_Jbf7Pdk"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a marketing specialist with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd15Iu-nkxkbaCvCH1CnjDQ4pq4kYhKc_pEmUSMJ7eSBKoik0BnY24Lmdrz17EWC9LYcqd3Ohec9kUBnKlAVCV8Xwz9Im2xC8_-aAUZTES2jKf7VFZVp9AKs5tULTBcayTtWJUQHH56uNZ3HxsFR_3vCdkrYumyEub7MvZYH3lq1PWyxnxowhOfkBOhBS0Rjltt9n3lg6thmfih4a5a-TFuH-cIwKceJ5QhJvbbOA8zbf6KIyBSYK9K9YvxviLqcjoDlNDxaeGyIA"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-primary font-label-sm">+45</div>
+</div>
+<button class="material-symbols-outlined text-primary transition-colors p-2 bg-primary/10 rounded-full" style="font-variation-settings: 'FILL' 1;">thumb_up</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">more_vert</button>
+</div>
+</article>
+<!-- Idea Item 4 -->
+<article class="group bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-primary hover:shadow-xl hover:shadow-primary/5 transition-all flex flex-col md:flex-row md:items-center justify-between gap-md relative overflow-hidden">
+<div class="flex flex-col gap-xs flex-1">
+<div class="flex items-center gap-sm flex-wrap">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full font-label-md">UI/UX</span>
+<span class="px-3 py-1 bg-primary-container text-on-primary-container rounded-full font-label-md">In Dev</span>
+<span class="text-on-surface-variant font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">event_repeat</span> Sprint 25
+                        </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Dynamic Bento Grid Layouts</h3>
+<p class="text-on-surface-variant font-body-sm max-w-2xl line-clamp-1">Implement a responsive masonry-style grid for better visual organization of varied content types.</p>
+</div>
+<div class="flex items-center gap-md self-end md:self-center">
+<div class="flex -space-x-3">
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a front-end engineer with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD36cUAKcKL-258WymJmU7ZQHbOH5LmDzojSwpay4nQDA2Z5sPaO0moMtQ87bX41nbI9FMeQaG_66QmfN9htH3Rioqp2ugWNWL4CtbMxnBCHZZ36UzwrNsUaiFZS82KfWtqss27AHLBH1loKps3Cly4IMzWHnxfuSyU8_oKlGSK9I9e8PI7bqxv-av_ar-acH9D7UkBLS8axZkEwHytxKD_IefOPFq1_MyaUw5ElBJbP6qz-z48mATDE4fO7Q-L4CQG3_cI6KuvaEM"/>
+<img alt="Voter" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A clean, vibrant minimalist avatar portrait of a graphic artist with soft lighting and a professional white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDrk2r8NCdMZ2Zry35SOmAw6MSyDc0uuVr-XaIvHCAFqhu2_MQr4AbFrL4vJhoDIhC2795wM4Wk_9qViCumUoLeWTuU1HKuW7TkX7Mfbq7rUpVJcgzcuo0piJ8vVU9FkIdvSuhfCmDOKbd5VNJjnBYDKtOmbeEc0zUbyIFppgLs1szl39OOxdguZHaR7gtQktIwwr5aefJvokH6b_hRFryGyf3P0v8V88VP1RbTwbESXO7Dib7Fo7zdF53F5vHxgqyhceo60Dwy2M"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary-fixed-dim flex items-center justify-center text-primary font-label-sm">+8</div>
+</div>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">thumb_up</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors p-2 hover:bg-primary/5 rounded-full">more_vert</button>
+</div>
+</article>
+</div>
+<!-- FAB (Contextual for Home/Ideas) -->
+<button class="fixed bottom-24 right-margin-mobile md:right-margin-desktop w-14 h-14 bg-secondary-container text-on-secondary-container rounded-2xl shadow-xl hover:shadow-secondary-container/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center z-30">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-inverse-surface flex justify-around items-center px-4 py-3 pb-safe shadow-[0_-4px_24px_rgba(53,37,205,0.08)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="font-label-md text-label-md">Ideas</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">tactic</span>
+<span class="font-label-md text-label-md">Projects</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+</body></html>

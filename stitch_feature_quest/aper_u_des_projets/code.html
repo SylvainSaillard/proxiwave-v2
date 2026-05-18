@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaStream - Projects &amp; Sprints</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#71f8e4",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "surface-container": "#eaedff",
+                        "inverse-surface": "#283044",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f2f3ff",
+                        "surface": "#faf8ff",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-surface": "#131b2e",
+                        "on-surface-variant": "#464555",
+                        "primary-fixed": "#e2dfff",
+                        "on-background": "#131b2e",
+                        "outline": "#777587",
+                        "tertiary": "#00534a",
+                        "surface-container-high": "#e2e7ff",
+                        "primary-container": "#4f46e5",
+                        "primary": "#3525cd",
+                        "on-secondary-container": "#fffbff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#9c48ea",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#2c0051",
+                        "on-tertiary-fixed": "#00201c",
+                        "background": "#faf8ff",
+                        "surface-dim": "#d2d9f4",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#dad7ff",
+                        "secondary": "#8127cf",
+                        "surface-bright": "#faf8ff",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-tertiary-container": "#69f1de",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "surface-tint": "#4d44e3",
+                        "on-primary-fixed": "#0f0069",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "inverse-primary": "#c3c0ff",
+                        "tertiary-container": "#006d62",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#dae2fd",
+                        "outline-variant": "#c7c4d8",
+                        "secondary-fixed": "#f0dbff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#dae2fd",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "lg": "40px",
+                        "xl": "64px",
+                        "md": "24px",
+                        "xs": "4px",
+                        "base": "8px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #faf8ff;
+            color: #131b2e;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-glow-primary {
+            box-shadow: 0 16px 24px rgba(53, 37, 205, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile h-16 bg-surface dark:bg-inverse-surface shadow-sm shadow-primary/5 fixed top-0 left-0 z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center overflow-hidden border-2 border-primary">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a creative director in a high-contrast, modern office environment. The lighting is soft and flattering, emphasizing a bright and professional aesthetic. The color palette includes sophisticated indigos and clean whites, reflecting a corporate yet creative leadership role within a technology-driven company." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKPKWwGIIm61mlaDbMGM7FQ8r5wNvIXpZz_VbUm6nOLgIyhlTo1r19J5JmZrGe2XuYWVIHX1hzdOnRSv4wxsnrpMiLauo8nnjqdivvtxviGR3gmTZKC8Ru8ipaQRdslBglGDb3yYfryN_1qF77_0fv1hFWHKvsnfIzLbDFRVRXyIxi_ErTxe58g8N1MOEB7mvmUdh1cKwNHUXLVyeo793enITn4ioGeTtOP0KexAlE-aUjfu-EL7Zl9-7Vx86j0ufMvaIWqG90sSg"/>
+</div>
+<span class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed-dim">IdeaStream</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim p-2 hover:bg-surface-container-high dark:hover:bg-surface-container-highest transition-colors rounded-full active:scale-95 duration-100" data-icon="notifications">
+            notifications
+        </button>
+</header>
+<main class="pt-20 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<div class="mb-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Projects &amp; Sprints</h1>
+<p class="text-on-surface-variant font-body-md">Managing 4 active streams and current velocity.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Content Area: Active Projects -->
+<section class="lg:col-span-8 space-y-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface">Active Projects</h2>
+<button class="flex items-center gap-2 bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full font-label-lg hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+                        New Stream
+                    </button>
+</div>
+<!-- Projects List (Bento-ish Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Project Card 1 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border-l-4 border-tertiary-fixed-dim soft-glow-primary hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<span class="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded-md font-label-sm uppercase tracking-wider">Strategic</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">E-Commerce Redesign</h3>
+</div>
+<span class="text-on-surface-variant font-label-md">80%</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mb-md line-clamp-2">Overhauling the user journey for mobile-first shopping experiences with gamified loyalty loops.</p>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-md">
+<div class="bg-tertiary-fixed-dim h-2 rounded-full" style="width: 80%"></div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-primary text-[10px] flex items-center justify-center text-white">+3</div>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border-l-4 border-secondary-fixed-dim soft-glow-primary hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<span class="bg-secondary-container/10 text-secondary px-2 py-0.5 rounded-md font-label-sm uppercase tracking-wider">Internal</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">AI Assistant v2</h3>
+</div>
+<span class="text-on-surface-variant font-label-md">45%</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mb-md line-clamp-2">Integrating natural language processing for automated brainstorming summaries and tagging.</p>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-md">
+<div class="bg-secondary-container h-2 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-300"></div>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="bg-surface-container-lowest p-md rounded-xl border-l-4 border-primary-fixed-dim soft-glow-primary hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<span class="bg-primary-container/10 text-primary px-2 py-0.5 rounded-md font-label-sm uppercase tracking-wider">Innovation</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-1">VR Workspace Beta</h3>
+</div>
+<span class="text-on-surface-variant font-label-md">12%</span>
+</div>
+<p class="text-on-surface-variant text-body-sm mb-md line-clamp-2">Prototyping a collaborative spatial environment for 3D mind-mapping sessions.</p>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-high rounded-full h-2 mb-md">
+<div class="bg-primary-container h-2 rounded-full" style="width: 12%"></div>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200"></div>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Add New Placeholder -->
+<div class="border-2 border-dashed border-outline-variant p-md rounded-xl flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary mb-2 text-4xl" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-lg">Initiate New Sprint</span>
+</div>
+</div>
+</section>
+<!-- Sidebar: Current Sprint Highlight -->
+<aside class="lg:col-span-4">
+<div class="bg-surface-container p-md rounded-2xl soft-glow-primary border border-outline-variant/30 sticky top-24">
+<div class="flex items-center gap-3 mb-md">
+<div class="w-10 h-10 bg-secondary-container text-on-secondary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</div>
+<div>
+<h2 class="font-label-lg text-secondary">Active Sprint</h2>
+<p class="font-headline-md text-headline-md text-on-surface">Sprint #42: Velocity</p>
+</div>
+</div>
+<div class="space-y-sm mb-md">
+<p class="text-body-sm text-on-surface-variant">Converting high-priority ideas into functional prototypes. Ending in 2 days.</p>
+<!-- Idea Chips being worked on -->
+<div class="flex flex-wrap gap-2 py-2">
+<div class="flex items-center gap-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant px-3 py-1 rounded-full font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="lightbulb">lightbulb</span>
+                                Smart Filters
+                            </div>
+<div class="flex items-center gap-1.5 bg-secondary-fixed text-on-secondary-fixed-variant px-3 py-1 rounded-full font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="hub">hub</span>
+                                API Bridge
+                            </div>
+<div class="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full font-label-md">
+<span class="material-symbols-outlined text-[16px]" data-icon="style">style</span>
+                                Brand Assets
+                            </div>
+</div>
+</div>
+<!-- Sprint Progress -->
+<div class="bg-surface-container-lowest p-sm rounded-xl mb-md">
+<div class="flex justify-between font-label-md mb-2">
+<span class="text-on-surface-variant">Tasks Completed</span>
+<span class="text-on-surface">14/18</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-3">
+<div class="bg-secondary h-3 rounded-full" style="width: 77%"></div>
+</div>
+</div>
+<button class="w-full py-3 bg-on-surface text-surface rounded-xl font-label-lg hover:opacity-90 transition-opacity active:scale-95">
+                        Open Sprint Board
+                    </button>
+<hr class="my-md border-outline-variant/30"/>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span>
+                            Daily Standup
+                        </div>
+<span class="font-label-md text-primary">Join Now</span>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest dark:bg-inverse-surface shadow-[0_-4px_24px_rgba(53,37,205,0.08)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all Active: translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all Active: translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-label-md text-label-md">Ideas</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 Active: translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="tactic" data-weight="fill">tactic</span>
+<span class="font-label-md text-label-md">Projects</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-5 py-1.5 hover:bg-surface-container-high dark:hover:bg-surface-container-highest rounded-full transition-all Active: translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+</body></html>

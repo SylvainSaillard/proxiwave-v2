@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaStream - Idea Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#faf8ff",
+                        "surface-bright": "#faf8ff",
+                        "on-surface-variant": "#464555",
+                        "inverse-primary": "#c3c0ff",
+                        "surface-dim": "#d2d9f4",
+                        "secondary": "#8127cf",
+                        "on-secondary-fixed-variant": "#6900b3",
+                        "primary": "#3525cd",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#00534a",
+                        "secondary-fixed": "#f0dbff",
+                        "primary-container": "#4f46e5",
+                        "tertiary-fixed": "#71f8e4",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f2f3ff",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "surface-container-high": "#e2e7ff",
+                        "outline": "#777587",
+                        "secondary-container": "#9c48ea",
+                        "tertiary-container": "#006d62",
+                        "inverse-surface": "#283044",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#131b2e",
+                        "on-secondary-fixed": "#2c0051",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#eaedff",
+                        "primary-fixed": "#e2dfff",
+                        "on-primary-fixed": "#0f0069",
+                        "on-tertiary-fixed": "#00201c",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-primary-container": "#dad7ff",
+                        "secondary-fixed-dim": "#ddb7ff",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c7c4d8",
+                        "surface-container-highest": "#dae2fd",
+                        "on-secondary-container": "#fffbff",
+                        "surface-tint": "#4d44e3",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "on-background": "#131b2e",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#dae2fd",
+                        "primary-fixed-dim": "#c3c0ff",
+                        "on-tertiary-container": "#69f1de",
+                        "background": "#faf8ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "md": "24px",
+                        "margin-desktop": "48px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "xl": "64px",
+                        "lg": "40px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "display-lg-mobile": ["Montserrat"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .lift-on-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 24px -8px rgba(53, 37, 205, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation -->
+<nav class="bg-surface docked full-width top-0 z-40 border-b border-outline-variant shadow-sm flex justify-between items-center w-full px-margin-desktop h-16 fixed">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">IdeaStream</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors px-4 py-2 rounded-lg" href="#">Dashboard</a>
+<a class="text-primary font-bold border-b-2 border-primary px-4 py-2" href="#">Idea Wall</a>
+<a class="text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors px-4 py-2 rounded-lg" href="#">Projects</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</button>
+<img alt="User Profile" class="w-8 h-8 rounded-full border-2 border-primary p-xs" data-alt="A professional headshot of a creative tech lead, soft natural lighting, blurred modern office background with warm wooden accents and plants, indigo highlights in the lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6d-LHCwra29_PKe5AEYfqsLmMpqx0zNCnt8fZf5OncFV-WY96XKajWKpfCmur1_NfrKZZRMqOMC-6KYeoD8eIFDqXBGtHYlLmUxNxHYMUl1-4BpAZN5WuvgDIjhh3Glk04iRZN0ol0aqO32FRDuuS3_8nwD6gdr9cLmfG3fyXLJ1i1sflWrwSL9mxyq2kca40CkSR3hQuOI5bP851j42z1qSpSxqg7rm6Gns63z56O4Qw2kYP3BOsSZgtNNVkkKicXfHF0cH62_o"/>
+</div>
+</nav>
+<div class="flex pt-16 min-h-screen">
+<!-- Sidebar -->
+<aside class="hidden md:flex h-screen sticky top-16 left-0 w-64 flex-col bg-surface-container-low shadow-sm p-md gap-sm">
+<div class="flex flex-col gap-xs mb-md">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">IdeaStream</span>
+<span class="font-label-lg text-label-lg text-on-surface-variant">v2.4 Innovation Hub</span>
+</div>
+<button class="bg-secondary-container text-on-secondary-container rounded-xl font-bold p-sm mb-md flex items-center justify-center gap-xs hover:translate-x-1 transition-all duration-200">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Idea
+            </button>
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm bg-secondary-fixed text-on-secondary-fixed rounded-xl font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span class="font-label-lg text-label-lg">Idea Wall</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-lg text-label-lg">Projects</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-lg text-label-lg">Team</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-sm flex flex-col gap-xs">
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-sm p-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span class="font-label-lg text-label-lg">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow p-margin-mobile md:p-lg bg-surface max-w-7xl mx-auto w-full">
+<!-- Hero Section -->
+<section class="mb-lg">
+<div class="flex flex-col md:flex-row md:items-start justify-between gap-md mb-md">
+<div class="max-w-3xl">
+<div class="flex items-center gap-sm mb-sm">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full font-label-md text-label-md">Gamification Engine</span>
+<span class="text-on-surface-variant font-label-md text-label-md">Posted 2 days ago</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-sm">Neural-Feedback Rewards for Collaborative Sprint Cycles</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Integrating a bio-feedback loop into the PM tool to reward deep work states and consistent peer review contributions with dynamic team-tier upgrades.</p>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<button class="bg-primary text-on-primary p-md rounded-xl flex flex-col items-center gap-xs shadow-sm hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="stat_3" style="font-variation-settings: 'FILL' 1;">stat_3</span>
+<span class="font-label-lg text-label-lg">142</span>
+</button>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Upvotes</span>
+</div>
+</div>
+<!-- Progress Stepper -->
+<div class="bg-surface-container-low p-md rounded-xl shadow-sm border-l-4 border-secondary">
+<div class="flex flex-col md:flex-row items-center justify-between gap-md">
+<div class="flex items-center gap-sm flex-grow w-full md:w-auto">
+<div class="flex flex-col items-center flex-1">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">1</div>
+<span class="font-label-md text-label-md mt-xs text-primary">Idea</span>
+</div>
+<div class="h-1 flex-grow bg-primary rounded-full"></div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold">2</div>
+<span class="font-label-md text-label-md mt-xs text-primary">Approval</span>
+</div>
+<div class="h-1 flex-grow bg-surface-container-highest rounded-full"></div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">3</div>
+<span class="font-label-md text-label-md mt-xs text-on-surface-variant">Dev</span>
+</div>
+<div class="h-1 flex-grow bg-surface-container-highest rounded-full"></div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center font-bold">4</div>
+<span class="font-label-md text-label-md mt-xs text-on-surface-variant">Done</span>
+</div>
+</div>
+<div class="bg-tertiary-fixed text-on-tertiary-fixed px-md py-sm rounded-lg flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="pending_actions">pending_actions</span>
+<span class="font-label-lg text-label-lg">In Approval Queue</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Details and Discussion -->
+<div class="lg:col-span-8 flex flex-col gap-lg">
+<!-- Design Files / Attachments -->
+<div class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-headline-md text-on-surface">Design Artifacts</h3>
+<button class="text-primary font-label-lg text-label-lg flex items-center gap-xs">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                                Add File
+                            </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-sm">
+<div class="flex items-center gap-sm p-sm bg-surface rounded-lg border border-outline-variant hover:bg-surface-container transition-colors cursor-pointer">
+<img alt="UI Kit" class="w-12 h-12 rounded-lg" data-alt="A detailed user interface design file preview shown on a high-resolution display. The design features vibrant electric purple and deep indigo accents, organized grid layouts, and minimalist iconography. The aesthetic is clean, professional, and modern corporate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXDizwn1e8kxAcZx8druRTSfs-sQ-NT9VegHjcSi28Flx5LWBmyvG-VfDbRB_Tq-BWZOQgNaMX0XH81gdslmwzaOGX3jG9xEEeIRMb1j9uLY-wHX9rw7rt9Jp1fr-qDPM8w4iIhPE28BsGe94AD8Oli_dKf7BJSwkbQeMNeUoiBB6agmxOo2Q6UGWq2SVvY7il82yApG_N2HEw2KOojGj992zOsBhDb42h2hOVyydhsIUFpFedK9ZUnpiCXEDkVmRVUcODRyLSDtk"/>
+<div>
+<p class="font-label-lg text-label-lg">Engine_v1.2_Mockups.fig</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">4.2 MB • Updated 1h ago</p>
+</div>
+</div>
+<div class="flex items-center gap-sm p-sm bg-surface rounded-lg border border-outline-variant hover:bg-surface-container transition-colors cursor-pointer">
+<img alt="Analytics" class="w-12 h-12 rounded-lg" data-alt="A data visualization dashboard mockup on a tablet screen. The graph bars are bright teal and the background is a soft light mode surface. Elegant typography displays complex metrics about user engagement and collaborative trends." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeov3-MVaF2XQG8qHRRXf__XyGQqhWPbIA7DuhSmb_zSv0M5fRWS9R6KzXwcJDdIOPJqv4yKrIYASr2gFOvAAJXO8S5mmBCyVisUGu4Y4LEgv3iSecK5sLkULnhU9ExuwvPBGYurUxWY9JhvLKD3E_DSdR2UIAimJ00NkghH0S3TdC5JKlLvDA5C09THslvCT_AuC2vlxHVMDMoOFMALUX10cObPO9-BrTLB8fVVWr4Z1gSXyQUAHYndOL14lw4SPbxYoaPYpuT7Y"/>
+<div>
+<p class="font-label-lg text-label-lg">Engagement_Flow_Diagram.pdf</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">1.8 MB • Updated 5h ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Team Discussion -->
+<div class="bg-surface p-md rounded-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Team Discussion</h3>
+<!-- Comment Input -->
+<div class="flex gap-sm mb-lg">
+<img alt="My Profile" class="w-10 h-10 rounded-full border-2 border-primary" data-alt="Close-up of a diverse professional person in a brightly lit studio, soft focus background, wearing modern business-casual attire. The image has a warm, energetic tone with subtle indigo color grading." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCGfQPm_cPGz3xrP6AV-Hschc64ZCS6X07wJ1RRZPEH854pBIlVFL7Q5EP5qPYbOGOFFNUo1gUY0b3ZRw2oDff6Kkgq_NiDAzEYwu7lngUFS-5xt59m1Oyj9F2-xcdRhWegAdEhqCHS-6JEhtqPPG2u99t0CW0HJQp5shzG7Iomy9u_kPLxZn53PbjTsDqBfduNfM4yZUK_uhJdbQV-j3Pj8et7X3qdcoERrCTCDOyiqdHp21FuKiYpwIiuuTQGiM4khU20n6hO-U"/>
+<div class="flex-grow">
+<textarea class="w-full bg-surface-container-low border border-outline-variant rounded-xl p-md font-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-outline" placeholder="Add a collaborative thought or feedback..." rows="3"></textarea>
+<div class="flex justify-end mt-sm">
+<button class="bg-secondary text-on-secondary px-lg py-sm rounded-full font-label-lg text-label-lg hover:shadow-lg transition-shadow">Post Contribution</button>
+</div>
+</div>
+</div>
+<!-- Nested Comments -->
+<div class="flex flex-col gap-lg">
+<!-- Comment 1 -->
+<div class="flex gap-sm">
+<img alt="Sarah" class="w-10 h-10 rounded-full" data-alt="Portrait of a female creative director with a bright smile, soft cinematic lighting, minimalist background with a hint of a green plant. Professional and modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO0ELGrcDex4d9_1q69QpMzHwj-YoFPF7x5ISn_FNkcdpR6xy5Kd9UXMnlu-a-qrz3iSTRWbggkZ3g-d1_E1nYpBGsaq_bSXEOsH2mDPO0i01MyDd3H78S32Y4u83t0OKKZ1N0Gj4mcvTqB7YCKmWi0UBgYS_GVvZ2vbudfar023UZDG3bk-pCmGGIBqlhvVj736cUdCzZB-T9kG8EkxYs6zPEnDLVV-uU1jycBNmbzqc85OQfpH3L0PlUiSBglTGnuLy6I4jdfJY"/>
+<div class="flex-grow bg-surface-container-low p-md rounded-xl rounded-tl-none">
+<div class="flex items-center justify-between mb-xs">
+<span class="font-label-lg text-label-lg">Sarah Chen</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2h ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-sm">The neuro-feedback loop concept is brilliant. Could we integrate this with the existing Slack notifications for real-time streaks?</p>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-xs text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> 12
+                                        </button>
+<button class="text-on-surface-variant font-label-sm text-label-sm">Reply</button>
+</div>
+<!-- Nested Reply -->
+<div class="mt-md flex gap-sm border-l-2 border-outline-variant pl-md">
+<img alt="Marcus" class="w-8 h-8 rounded-full" data-alt="Portrait of a young male software engineer, high-contrast studio lighting, neutral grey background, wearing a modern tech company hoodie. Focused and energetic expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLLgNP3i5GrkRwRlk4MQiHN5B3Ocr5ZRUq4IYT9-WRn446xaBHdeaIX0rQUrYcFeJyy8m94QSIikUAVTQ96rkpunpXzj_lauX3WMMSEu5udmwKJviE6jVZJKyN--CBnLWHqqzjgZugEqEbzuTFaL_MDQt1447UXoNkGvNmstOY9s-7U9QAf1MP2B-Vw2n5jJzme4bsNF7u_RXML00arcE4c9d3YqxZts6N-C203Rvr43WldG3M7gOJ2Qh6WCFwftpMOdCxFEPGrqk"/>
+<div class="flex-grow">
+<div class="flex items-center justify-between mb-xs">
+<span class="font-label-lg text-label-lg">Marcus Wright</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1h ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-xs">Already looking into the API hooks for this. It seems feasible for the Q3 release.</p>
+<button class="text-on-surface-variant font-label-sm text-label-sm">Reply</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Sidebar Stats -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Idea Stats Card -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant">
+<h4 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider mb-md">Execution Context</h4>
+<div class="flex flex-col gap-md">
+<div class="flex items-center justify-between p-sm bg-surface-container rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="account_tree">account_tree</span>
+<span class="font-label-lg text-label-lg">Linked Project</span>
+</div>
+<span class="font-body-md text-body-md text-primary font-semibold">Project Aurora</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary" data-icon="cycle">cycle</span>
+<span class="font-label-lg text-label-lg">Sprint Cycle</span>
+</div>
+<span class="font-body-md text-body-md font-semibold">Sprint 24-B</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-lg text-label-lg">Est. Delivery</span>
+</div>
+<span class="font-body-md text-body-md font-semibold">Oct 12, 2024</span>
+</div>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant">Complexity Score</span>
+<span class="font-label-md text-label-md text-on-surface">High (8/10)</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[80%]"></div>
+</div>
+</div>
+</div>
+<!-- Activity History -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant">
+<h4 class="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-wider mb-md">Activity History</h4>
+<div class="flex flex-col gap-md relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant">
+<div class="flex gap-sm relative z-10">
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[14px]" data-icon="check">check</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Moved to Approval</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">by Elena Gilbert • 2h ago</p>
+</div>
+</div>
+<div class="flex gap-sm relative z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]" data-icon="edit">edit</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Description Updated</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">by Alex Rivera • 5h ago</p>
+</div>
+</div>
+<div class="flex gap-sm relative z-10">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]" data-icon="add_comment">add_comment</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">New Thread Started</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">by Sarah Chen • 1d ago</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-md py-sm border border-outline-variant rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors">View All Logs</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

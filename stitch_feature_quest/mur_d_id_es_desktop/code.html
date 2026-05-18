@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>IdeaStream - Idea Wall</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#faf8ff",
+                      "surface-bright": "#faf8ff",
+                      "on-surface-variant": "#464555",
+                      "inverse-primary": "#c3c0ff",
+                      "surface-dim": "#d2d9f4",
+                      "secondary": "#8127cf",
+                      "on-secondary-fixed-variant": "#6900b3",
+                      "primary": "#3525cd",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#00534a",
+                      "secondary-fixed": "#f0dbff",
+                      "primary-container": "#4f46e5",
+                      "tertiary-fixed": "#71f8e4",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f2f3ff",
+                      "on-tertiary-fixed-variant": "#005048",
+                      "tertiary-fixed-dim": "#4fdbc8",
+                      "surface-container-high": "#e2e7ff",
+                      "outline": "#777587",
+                      "secondary-container": "#9c48ea",
+                      "tertiary-container": "#006d62",
+                      "inverse-surface": "#283044",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface": "#131b2e",
+                      "on-secondary-fixed": "#2c0051",
+                      "error-container": "#ffdad6",
+                      "surface-container": "#eaedff",
+                      "primary-fixed": "#e2dfff",
+                      "on-primary-fixed": "#0f0069",
+                      "on-tertiary-fixed": "#00201c",
+                      "inverse-on-surface": "#eef0ff",
+                      "on-primary-container": "#dad7ff",
+                      "secondary-fixed-dim": "#ddb7ff",
+                      "on-error": "#ffffff",
+                      "outline-variant": "#c7c4d8",
+                      "surface-container-highest": "#dae2fd",
+                      "on-secondary-container": "#fffbff",
+                      "surface-tint": "#4d44e3",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "on-background": "#131b2e",
+                      "error": "#ba1a1a",
+                      "surface-variant": "#dae2fd",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "on-tertiary-container": "#69f1de",
+                      "background": "#faf8ff",
+                      "on-secondary": "#ffffff",
+                      "on-primary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "md": "24px",
+                      "margin-desktop": "48px",
+                      "base": "8px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px",
+                      "xl": "64px",
+                      "lg": "40px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Montserrat"],
+                      "display-lg-mobile": ["Montserrat"],
+                      "label-lg": ["Inter"],
+                      "display-lg": ["Montserrat"],
+                      "headline-lg": ["Montserrat"],
+                      "body-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .lift-on-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(53, 37, 205, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen sticky left-0 w-64 flex flex-col bg-surface-container-low border-r border-outline-variant p-md gap-sm">
+<div class="mb-lg">
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary">IdeaStream</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">v2.4 Innovation Hub</p>
+</div>
+<button class="bg-secondary text-on-secondary px-md py-sm rounded-xl font-bold flex items-center justify-center gap-base shadow-sm hover:brightness-110 transition-all mb-lg">
+<span class="material-symbols-outlined">add</span>
+<span>New Idea</span>
+</button>
+<nav class="flex flex-col gap-xs flex-grow">
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm bg-secondary-fixed text-on-secondary-fixed rounded-xl font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+<span class="font-label-lg text-label-lg">Idea Wall</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-lg text-label-lg">Projects</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-lg text-label-lg">Team</span>
+</a>
+</nav>
+<div class="flex flex-col gap-xs mt-auto pt-md border-t border-outline-variant">
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+<a class="flex items-center gap-sm px-md py-sm text-on-surface-variant hover:bg-surface-container-high rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-label-lg text-label-lg">Support</span>
+</a>
+</div>
+</aside>
+<div class="flex-grow flex flex-col">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 bg-surface border-b border-outline-variant sticky top-0 z-40 shadow-sm">
+<div class="flex items-center gap-lg">
+<div class="flex gap-md items-center">
+<span class="material-symbols-outlined text-primary">military_tech</span>
+<span class="font-label-md text-label-md text-on-surface-variant">248 Global Points</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-full pl-xl pr-md py-xs w-64 focus:ring-2 focus:ring-primary focus:border-primary font-body-sm transition-all" placeholder="Search feature requests..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-xs hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary">
+<img alt="User Profile" data-alt="A professional headshot of a creative product manager in a modern office, featuring soft studio lighting, a vibrant blue backdrop, and a confident, approachable expression. The image is captured in high resolution with a clean, contemporary aesthetic matching the UI palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc6pq446oxi4WEHJbJoNTaALfMt8WGToefe7yYIJ7F8w2vEpGNhQP0GFmxGkiktSqiFRv1EX2ZyKnhpd1i7z1a7dKVRfUA8GtE6UA2XsfkWLo29KNNbC0dYOj_1QSnAVRsZ0EfPdl4PWFeYqJVgIjfycmLz_mUS12so_LryeplZBlp7LtcBYvb9HrLp9951mg1R-yTl0Y1Xi8VsWqsKLL9GhrkTqUiJde1HBUZR1dKXL0cLAlnvHg9tJ6zbXPCRx-_KNBYpL25yq8"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="p-margin-desktop space-y-lg">
+<!-- Filters Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-xs">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Idea Wall</h2>
+<p class="text-on-surface-variant font-body-md max-w-xl">Browse, upvote, and collaborate on the next big thing. High-impact features prioritized by the community.</p>
+</div>
+<div class="flex flex-wrap gap-sm">
+<button class="px-md py-base bg-primary text-on-primary rounded-full font-label-lg flex items-center gap-xs">
+                        All Categories
+                    </button>
+<button class="px-md py-base bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-lg transition-colors">
+                        UI/UX
+                    </button>
+<button class="px-md py-base bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-lg transition-colors">
+                        Backend
+                    </button>
+<button class="px-md py-base bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest rounded-full font-label-lg transition-colors">
+                        Mobile
+                    </button>
+</div>
+</section>
+<!-- Idea Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1: In Dev -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-secondary lift-on-hover transition-all flex flex-col gap-md relative">
+<div class="flex justify-between items-start">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">In Dev</span>
+<div class="flex items-center gap-xs text-secondary font-bold">
+<span class="material-symbols-outlined text-[20px]">keyboard_double_arrow_up</span>
+<span>142</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">AI-Powered Mind Mapping</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Automatically generate visual diagrams from brainstorming text prompts using our new neural layout engine.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="A smiling software engineer with glasses in a tech workspace, warm natural lighting from a window, high-contrast and professional aesthetic, soft depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi7bLgB9ui5KANU0SBn_LpaZWVeovO855BXolek282o3seg7iqmsTLgc6z3_d7jwv5RqsBLik-q581eSIP6m6UUomJQo3NVKW9_o9Qgl4BExmKF_R9JczQXj4pInJjvXgNLvvTjyU5RL5JU0E4Qx140ALNSluKM25lzf_lwc_TUIGOJo-xZjZMPJw63XU7jrPnEr5XMyRkrV2YbCQOo1LtP6WrUua4NtdmxCM9bbIaedC7kgeTch557ILkDveR4HeolsIKOFt8fbA"/>
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Close-up portrait of a woman designer in a vibrant creative studio, colorful lighting accents in teal and purple, modern corporate style, high quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKe2BPo1YcaJpYO3BIUPckC4BnncHXJHmLC2dWKEl3FD-Hgk2qmOFFpAhMY3CNUqQiQZMHynQScbfVrkfws8uhtIH3-rVzJuz2W1WBcnniWIPbBAjjClUM_dlI8_Kzn-90XmVPtQ9sdOH9vyjjrcRYgUinx1F1ZedI_edgxi_ntOj_zkf2feWzGiahIBSdP-HPoUJqawtqdZu-98luqxJJ-KXZD2k20r3gAdn5bkuJaNX4PLfvT3omnb78rKjIuYiLYW3VuR-49w"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-lowest bg-surface-container-high flex items-center justify-center text-label-sm font-bold text-on-surface-variant">+3</div>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="text-label-sm">Sprint 42</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Approved -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-tertiary lift-on-hover transition-all flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">Approved</span>
+<div class="flex items-center gap-xs text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span>
+<span>89</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">Dark Mode Optimization</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Enhanced contrast ratios and custom OLED black theme for energy-saving mobile ideation.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Professional woman in a bright, modern workplace, clean white desk environment, soft bokeh background, high-end commercial photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASmfDdfInT6CsoZ8Ku3MwMG48GpDZPSmsTqxRIeoFr1XYpcOSzWKUfL5S64SPaqdhHT0GCSkORiHHv0bCuxa-IiB2NTxEVfeOUKflMzYFPAz06oSwN3p5rjS9_jjJQDNdjk316bnmhTeZbSnqQDCQrb-LZEj0RfNfBfnO3WC_2xjAusPut8uBeAnaVnCgdY72SOKAxIYQ3kg3AF6qZ-wEiYn17f_vV0mKPOdu09tDs1lNVASG3cd20crNcFWWxPobl4peNAkUfX0w"/>
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Portrait of a creative professional in a minimal white setting, soft shadows, vibrant accents, consistent with a clean modern UI brand style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmzWGFtdxIXeT60FZxiP_lkbLB5rfT8CqEZbohQ9jTkj-12dKG9nmK2kD8aOWDOInEGFL2kKfTydvq-m4kfzKZPzY4RZayZuY4ySLgVWnDz1-zpoDrSZT_OBBLs7_VLE8-njXIqMFaDRQzIca3voB5kJgZO0OrfBLix1laUgPXDg4PW_Tkgj30aKcpNG1yjyncod60gKQ6-erA4kFGGo7mvAV8_uGSQMp-yZYDgq1gMWf_ezWWrmQTHNHUALsuCzTC74caRR4IJ6I"/>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="text-label-sm">Sprint 44</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Shipped -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-primary-container lift-on-hover transition-all flex flex-col gap-md opacity-80">
+<div class="flex justify-between items-start">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">Shipped</span>
+<div class="flex items-center gap-xs text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>256</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">Slack Integration v2</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Real-time idea sync between Slack channels and the IdeaStream wall with interactive emoji voting.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Young professional man in a tech-focused office setting, energetic blue lighting, high resolution, clean corporate aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApUjoV7RbzQjr7DGAyD8nIK0N7y1SeTh1zRPAfx5ziYFnrz064om5hXlp02U5dahXhz7QEKQ9VCbqRtXx8JGdFp_TMx8OARzmhXs4s1vYaOOG-2gjoEVvxCyfg9SD0j4gtQkot4OOXdlNWr7SGUKjKgpH6mSveR-UtgzAEf6m6teyKr5_Ld8Ff0YFpXnpDpcNF4S3pnRZgLNhhAT9KAgJvqfgWsKMgf5D6A1PPpaWB7VIORPNS9RlXEsGP7NUiIi8GUwHS_vPIdU0"/>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="text-label-sm">Deployed Oct 12</span>
+</div>
+</div>
+</div>
+<!-- Card 4: In Dev -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-secondary lift-on-hover transition-all flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">In Dev</span>
+<div class="flex items-center gap-xs text-secondary font-bold">
+<span class="material-symbols-outlined text-[20px]">keyboard_double_arrow_up</span>
+<span>212</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">Collaborative Whiteboard</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Low-latency canvas for sketching and sticky-note ideation during live team meetings.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Executive team member in a minimalist office, soft daylight, professional vibe, high quality digital photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2SFh4tr2tfGmWNem9495ivhcoprbAXAQ5DNZse8MNufZ4CEVV248dW2AsTQ_6bXobDP1q_kaOoSbKb0tLH-N2KSSyP0eBrD3iwx01bR8Ol4T9qAMsJtvCuByOLMGSoF4GxKPjjOaWIhC3OXG29SpV2GljEJ877G5h38bMDHYRXFMAgb8Fzmes_FKg5P6YQMrebUHIjEzEkJteGO2CVJeMvDtZzA0n1S3pkCz2D4HdoYUu7GfY9WzL_Jra2swikdPavCDsJc5_4-Q"/>
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Female software architect in a modern office building, large windows, bright and professional lighting, high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3PB5PwA-MgenaxTTAen3RJ7_wIW-ZjITAlVSKsqA9fT6DG5DdZNijG2WSCuU1atxgtsfDq0WnaReCHCnCou-g7FE80T9HuXODfi5AYGg4aB0ac9aYAnE9KCC_K57YhqKQW0lPt50QQLAJ3zIm0fghX5A0mcEC97AaYs1keOXex7T2hAJlGI1ZPOubXE85AfYLckczCEquIGegJso1QqxVz6xyYhVaXCOG15KeaXbqbCPld-pHicuIieikSdVKlJ479yzhiqn3JfA"/>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="text-label-sm">Sprint 43</span>
+</div>
+</div>
+</div>
+<!-- Card 5: Approved -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-tertiary lift-on-hover transition-all flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">Approved</span>
+<div class="flex items-center gap-xs text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span>
+<span>45</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">Role-Based Permissions</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Granular access control for external stakeholders and client observers on specific projects.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Male product owner in a clean corporate setting, professional portrait lighting, sharp focus, modern digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_vgmghirUVh6F62eg3fbPOTosEq6jayCikjFQ_SBb8CsZmbsfAzRbfi5AN_NS-jk6Vma3CMsjF68tAOpJ09YfBykJBQovtQj2ao0Tmv3KMj1O1_BrYQVVsYclOD-cPuP0eahMX3uTk20srzWRtPF5MWHxQF59Z35Cbqt4sc1bSRFVLuRVGI1iTtpzekJ1Bga9eqIOM1XnYtORHyAwm0cgwpQS6wIJ2lda4_GzcoRwCgvER2G0Im2DxO614INfukj42ak3wra1_2Q"/>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="text-label-sm">Sprint 45</span>
+</div>
+</div>
+</div>
+<!-- Card 6: In Dev -->
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-sm border-l-4 border-secondary lift-on-hover transition-all flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<span class="bg-secondary-fixed text-on-secondary-fixed px-sm py-xs rounded-lg text-label-sm font-bold uppercase tracking-wider">In Dev</span>
+<div class="flex items-center gap-xs text-secondary font-bold">
+<span class="material-symbols-outlined text-[20px]">keyboard_double_arrow_up</span>
+<span>176</span>
+</div>
+</div>
+<div>
+<h3 class="font-headline-md text-[18px] mb-xs text-on-surface">Advanced Data Export</h3>
+<p class="font-body-sm text-on-surface-variant line-clamp-3">Export idea analytics and roadmaps directly to PowerPoint, PDF, or interactive CSV reports.</p>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex -space-x-2">
+<img alt="Contributor" class="w-8 h-8 rounded-full border-2 border-surface-container-lowest" data-alt="Business professional in a sleek modern office, vibrant lighting, professional depth of field, corporate high-key style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNdpbSZbH-U2hi9oaDXWZZJpk_1tI1xgJSqhjLbKmA9lxBBQMu9w8f5nqiGvKs3U7bG4gWzBu9PMG59Veii050pL-WVCZlUr8g73jlVjC44E1eSu1MrVhKKmDSEyQV2RaAU9Oy7PSAO1FC6sdvL88-ijKEhQkFbqt4Wb2U2x5XZ4uHSFe-OGmjz18F_-QR5zgYnF6s4w2l6Ld2GSjnBq8yXuJFemx722J61b6HYzwGlRSnXQSAukoQSHCTnct1bHMGgsOWCrBFNoY"/>
+</div>
+<div class="flex items-center gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span class="text-label-sm">Sprint 43</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="flex flex-col items-center gap-md pt-lg">
+<button class="px-xl py-base border-2 border-primary text-primary hover:bg-primary-fixed rounded-full font-bold transition-all lift-on-hover">
+                    Load More Ideas
+                </button>
+<p class="text-label-sm text-on-surface-variant">Showing 6 of 124 ideas</p>
+</div>
+</main>
+</div>
+<!-- Gamification Floating Streak -->
+<div class="fixed bottom-md right-md flex items-center gap-sm bg-surface-container-lowest p-sm pr-md rounded-full shadow-lg border border-outline-variant z-50">
+<div class="w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-on-secondary shadow-[0_0_15px_rgba(129,39,207,0.4)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<p class="font-label-sm text-on-surface-variant leading-none">Contribution Streak</p>
+<p class="font-label-lg text-secondary font-bold">12 Days</p>
+</div>
+</div>
+</body></html>
