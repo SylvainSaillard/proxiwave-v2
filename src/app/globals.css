@@ -1,74 +1,305 @@
 @import "tailwindcss";
 
 /* ================================================================
-   T004 - Palette du prototype Proxiwave (pw-*, cream, warm-*, sky-*)
-   Tailwind CSS v4 : configuration via @theme
+   IdeaStream v4 — Design tokens
+   Source : stitch_feature_quest/dynamic_ideation_system/DESIGN.md
+   Tailwind CSS v4 : configuration via @theme (CSS-first, pas de
+   tailwind.config.ts).
+
+   Principes :
+   - Palette ancrée Indigo (primary) + Slate, avec Electric Purple
+     (secondary) pour l'idéation et Bright Teal (tertiary) pour les
+     états positifs.
+   - Convention Material 3 : couleur de fond + on-* contrastant +
+     -container (fond tinté) + on-*-container.
+   - Light mode uniquement.
    ================================================================ */
 
 @theme {
-  /* Couleurs principales Proxiwave */
-  --color-cream: #F8FAFB;
-  --color-pw-50: #E8F4FD;
-  --color-pw-100: #BEE0F7;
-  --color-pw-200: #90CAF0;
-  --color-pw-300: #64B5F6;
-  --color-pw-400: #3AA0E8;
-  --color-pw-500: #1976D2;
-  --color-pw-600: #1565A0;
-  --color-pw-700: #0D5A8E;
-  --color-pw-800: #0B4F7A;
-  --color-pw-900: #083D5E;
+  /* ---------- Surface & background ---------- */
+  --color-surface: #faf8ff;
+  --color-surface-dim: #d2d9f4;
+  --color-surface-bright: #faf8ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f2f3ff;
+  --color-surface-container: #eaedff;
+  --color-surface-container-high: #e2e7ff;
+  --color-surface-container-highest: #dae2fd;
+  --color-surface-variant: #dae2fd;
+  --color-surface-tint: #4d44e3;
 
-  /* Couleurs Sky */
-  --color-sky-50: #F0F7FC;
-  --color-sky-100: #DBEDF8;
-  --color-sky-200: #B8DBF2;
-  --color-sky-300: #8FC6E9;
-  --color-sky-400: #5BAADB;
+  --color-on-surface: #131b2e;
+  --color-on-surface-variant: #464555;
+  --color-inverse-surface: #283044;
+  --color-inverse-on-surface: #eef0ff;
 
-  /* Couleurs Warm */
-  --color-warm-50: #FAFAF8;
-  --color-warm-100: #F4F3EF;
-  --color-warm-200: #ECEAE4;
-  --color-warm-300: #DDD9D0;
-  --color-warm-400: #C4BEB2;
+  --color-background: #faf8ff;
+  --color-on-background: #131b2e;
 
-  /* Typographie */
-  --font-sans: Inter, system-ui, sans-serif;
+  --color-outline: #777587;
+  --color-outline-variant: #c7c4d8;
 
-  /* Border radius bento-block */
+  /* ---------- Primary (Indigo) ---------- */
+  --color-primary: #3525cd;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #4f46e5;
+  --color-on-primary-container: #dad7ff;
+  --color-inverse-primary: #c3c0ff;
+  --color-primary-fixed: #e2dfff;
+  --color-primary-fixed-dim: #c3c0ff;
+  --color-on-primary-fixed: #0f0069;
+  --color-on-primary-fixed-variant: #3323cc;
+
+  /* ---------- Secondary (Electric Purple — idéation, contributions) ---------- */
+  --color-secondary: #8127cf;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #9c48ea;
+  --color-on-secondary-container: #fffbff;
+  --color-secondary-fixed: #f0dbff;
+  --color-secondary-fixed-dim: #ddb7ff;
+  --color-on-secondary-fixed: #2c0051;
+  --color-on-secondary-fixed-variant: #6900b3;
+
+  /* ---------- Tertiary (Bright Teal — succès, livré, milestones) ---------- */
+  --color-tertiary: #00534a;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #006d62;
+  --color-on-tertiary-container: #69f1de;
+  --color-tertiary-fixed: #71f8e4;
+  --color-tertiary-fixed-dim: #4fdbc8;
+  --color-on-tertiary-fixed: #00201c;
+  --color-on-tertiary-fixed-variant: #005048;
+
+  /* ---------- Error ---------- */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ================================================================
+     LEGACY — palette Proxiwave v1-v3 (cream, pw-*, sky-*, warm-*)
+     Conservée pour la landing page et tout le code dashboard
+     pré-IdeaStream. À supprimer une fois la refonte v4 stabilisée
+     et les anciens composants démontés.
+     ================================================================ */
+  --color-cream: #f8fafb;
+  --color-pw-50: #e8f4fd;
+  --color-pw-100: #bee0f7;
+  --color-pw-200: #90cAF0;
+  --color-pw-300: #64b5f6;
+  --color-pw-400: #3aa0e8;
+  --color-pw-500: #1976d2;
+  --color-pw-600: #1565a0;
+  --color-pw-700: #0d5a8e;
+  --color-pw-800: #0b4f7a;
+  --color-pw-900: #083d5e;
+
+  --color-sky-50: #f0f7fc;
+  --color-sky-100: #dbedf8;
+  --color-sky-200: #b8dbf2;
+  --color-sky-300: #8fc6e9;
+  --color-sky-400: #5baadb;
+
+  --color-warm-50: #fafaf8;
+  --color-warm-100: #f4f3ef;
+  --color-warm-200: #eceae4;
+  --color-warm-300: #ddd9d0;
+  --color-warm-400: #c4beb2;
+
   --radius-bento: 20px;
 
-  /* Animation fade-in */
+  /* ================================================================
+     Typographie — dual font strategy
+     Montserrat (display, headlines, gamification) — character & energy
+     Inter (body, labels, inputs) — legibility & neutral tone
+     Les variables --font-* sont alimentées par next/font/google
+     dans src/app/layout.tsx (commit suivant).
+     ================================================================ */
+  --font-display: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
+  --font-body: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+
+  /* Display & headlines */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 56px;
+  --text-display-lg--font-weight: 700;
+  --text-display-lg--letter-spacing: -0.02em;
+
+  --text-display-lg-mobile: 36px;
+  --text-display-lg-mobile--line-height: 44px;
+  --text-display-lg-mobile--font-weight: 700;
+  --text-display-lg-mobile--letter-spacing: -0.02em;
+
+  --text-headline-lg: 32px;
+  --text-headline-lg--line-height: 40px;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  /* Body */
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 28px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 24px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 14px;
+  --text-body-sm--line-height: 20px;
+  --text-body-sm--font-weight: 400;
+
+  /* Labels (metadata, tags) */
+  --text-label-lg: 14px;
+  --text-label-lg--line-height: 20px;
+  --text-label-lg--font-weight: 600;
+  --text-label-lg--letter-spacing: 0.01em;
+
+  --text-label-md: 12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--font-weight: 600;
+  --text-label-md--letter-spacing: 0.02em;
+
+  --text-label-sm: 11px;
+  --text-label-sm--line-height: 14px;
+  --text-label-sm--font-weight: 500;
+
+  /* ================================================================
+     Rounded — shapes consistantes
+     Pill (full) pour boutons, status tags, avatars.
+     Large (lg, xl) pour conteneurs d'idéation et nouveaux prompts.
+     ================================================================ */
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-DEFAULT: 0.5rem; /* 8px — inputs, cards, list items */
+  --radius-md: 0.75rem; /* 12px */
+  --radius-lg: 1rem; /* 16px — containers d'idéation */
+  --radius-xl: 1.5rem; /* 24px — modals, hero cards */
+  --radius-full: 9999px;
+
+  /* ================================================================
+     Spacing (échelle 8px-based) — variables CSS additionnelles.
+     Le scale Tailwind par défaut (p-1, p-2, p-4...) reste actif.
+     Ces tokens servent pour des layouts custom (gutter, marges page).
+     ================================================================ */
+  --spacing-base: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 12px;
+  --spacing-md: 24px;
+  --spacing-lg: 40px;
+  --spacing-xl: 64px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 48px;
+
+  /* ================================================================
+     Shadows — "soft-glow" ambient pour gamification light.
+     Blur 16-24px, opacité 5-8%, tinte primary (indigo) sur les
+     éléments interactifs pour évoquer l'énergie sans alourdir.
+     ================================================================ */
+  --shadow-soft: 0 4px 16px 0 rgba(19, 27, 46, 0.05);
+  --shadow-soft-md: 0 8px 24px 0 rgba(19, 27, 46, 0.06);
+  --shadow-soft-lg: 0 16px 32px 0 rgba(19, 27, 46, 0.08);
+
+  --shadow-primary-glow: 0 8px 24px 0 rgba(53, 37, 205, 0.12);
+  --shadow-primary-glow-lg: 0 12px 32px 0 rgba(53, 37, 205, 0.18);
+  --shadow-secondary-glow: 0 8px 24px 0 rgba(129, 39, 207, 0.16);
+  --shadow-tertiary-glow: 0 8px 24px 0 rgba(0, 83, 74, 0.12);
+
+  /* ================================================================
+     Animations — fade-in d'entrée et soft "lift" pour interactivité.
+     ================================================================ */
   --animate-fade-in: fadeIn 0.6s ease-out forwards;
+  --animate-lift: lift 0.2s ease-out forwards;
 }
 
-/* Keyframe pour l'animation fade-in */
+/* ----------------------------------------------------------------
+   Gradients utilitaires — utilisés par SparkAChangeHero, FAB, CTAs.
+   Pas dans @theme car Tailwind v4 ne génère pas d'utilitaires
+   `bg-gradient-<name>` à partir de variables ; on les expose via
+   classes utilitaires custom.
+   ---------------------------------------------------------------- */
+@layer utilities {
+  .bg-spark-gradient {
+    background: linear-gradient(135deg, #3525cd 0%, #8127cf 100%);
+  }
+  .bg-secondary-gradient {
+    background: linear-gradient(135deg, #8127cf 0%, #4f46e5 100%);
+  }
+  .bg-tertiary-gradient {
+    background: linear-gradient(135deg, #00534a 0%, #006d62 100%);
+  }
+}
+
+/* ----------------------------------------------------------------
+   Keyframes
+   ---------------------------------------------------------------- */
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(16px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Reset dark mode — pas de dark mode dans le design Proxiwave */
+@keyframes lift {
+  0% { transform: translateY(0); box-shadow: var(--shadow-soft); }
+  100% { transform: translateY(-2px); box-shadow: var(--shadow-soft-lg); }
+}
+
+/* ----------------------------------------------------------------
+   Root & body — light mode uniquement.
+   ---------------------------------------------------------------- */
 :root {
-  --background: #F8FAFB;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body);
+  font-feature-settings: "cv11", "ss01"; /* features Inter pour lisibilité */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scrollbar custom */
+/* Display/headline classes appliquent automatiquement Montserrat. */
+.font-display,
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+}
+
+/* ----------------------------------------------------------------
+   Scrollbar custom — discret, tinte outline-variant.
+   ---------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-warm-300);
+  background: var(--color-outline-variant);
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* ----------------------------------------------------------------
+   Focus rings — accessibilité a11y, tinte primary.
+   ---------------------------------------------------------------- */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/* iOS safe area pour bottom tab bar mobile. */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
