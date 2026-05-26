@@ -34,23 +34,28 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');
-  const isAuthRoute =
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/auth');
+  // Routes protegees : tout /ideastream/* (nouveau MVP) + /dashboard,
+  // /documents, /projets (legacy, en cours de demantelement).
+  const path = request.nextUrl.pathname;
+  const isProtected =
+    path.startsWith('/ideastream') ||
+    path.startsWith('/dashboard') ||
+    path.startsWith('/documents') ||
+    path.startsWith('/projets');
+  const isAuthRoute = path.startsWith('/login') || path.startsWith('/auth');
 
   // Rediriger vers /login si non authentifié et sur route protégée
-  if (!user && isDashboard) {
+  if (!user && isProtected) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
-    url.searchParams.set('redirectedFrom', request.nextUrl.pathname);
+    url.searchParams.set('redirectedFrom', path);
     return NextResponse.redirect(url);
   }
 
-  // Rediriger vers /dashboard si déjà connecté et sur route auth
+  // Rediriger vers /ideastream/dashboard si déjà connecté et sur route auth
   if (user && isAuthRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
+    url.pathname = '/ideastream/dashboard';
     return NextResponse.redirect(url);
   }
 

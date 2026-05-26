@@ -18,7 +18,10 @@ export async function signIn(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  redirect('/dashboard');
+  // IdeaStream v4 : redirige vers le nouveau dashboard.
+  // L'ancien /dashboard lit des tables (projects, profiles, ...) qui ont
+  // ete supprimees lors de la refonte v4.
+  redirect('/ideastream/dashboard');
 }
 
 export async function signOut() {
