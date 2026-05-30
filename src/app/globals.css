@@ -179,19 +179,17 @@
   --radius-full: 9999px;
 
   /* ================================================================
-     Spacing (échelle 8px-based) — variables CSS additionnelles.
-     Le scale Tailwind par défaut (p-1, p-2, p-4...) reste actif.
-     Ces tokens servent pour des layouts custom (gutter, marges page).
+     Spacing custom (échelle 8px-based).
+     ⚠️ NE PAS définir de clés --spacing-sm/md/lg/xl : elles entrent en
+     collision avec les tailles "t-shirt" natives de Tailwind v4 et
+     cassent max-w-xl, w-lg, max-w-md, etc. (max-w-xl résolvait vers
+     --spacing-xl=64px au lieu de --container-xl=576px).
+     On préfixe donc avec --spacing-pw-* pour les layouts custom
+     éventuels (gap-pw-gutter, etc.), sans toucher au scale par défaut.
      ================================================================ */
-  --spacing-base: 8px;
-  --spacing-xs: 4px;
-  --spacing-sm: 12px;
-  --spacing-md: 24px;
-  --spacing-lg: 40px;
-  --spacing-xl: 64px;
-  --spacing-gutter: 24px;
-  --spacing-margin-mobile: 16px;
-  --spacing-margin-desktop: 48px;
+  --spacing-pw-gutter: 24px;
+  --spacing-pw-margin-mobile: 16px;
+  --spacing-pw-margin-desktop: 48px;
 
   /* ================================================================
      Shadows — "soft-glow" ambient pour gamification light.

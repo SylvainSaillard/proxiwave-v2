@@ -1,8 +1,11 @@
 // SparkAChangeHero — bandeau d'accueil "Spark a Change.".
 //
-// Card large à gradient (indigo → electric purple), titre display
-// inspirant, sous-titre, CTA "New Idea" en pill blanc, visuel
-// sparkles décoratif à droite (desktop).
+// Card large à gradient (indigo → electric purple). Layout responsive :
+//   - Mobile  : pile verticale (titre, sous-titre, CTA) + petit sparkle
+//     d'angle décoratif.
+//   - Desktop : 2 colonnes via grid 12 — contenu à gauche (7/12), zone
+//     visuelle (halo + sparkles) à droite (5/12). Le sous-titre a une
+//     "measure" de lecture confortable (~52ch) plutôt que de s'étaler.
 //
 // Server Component pur ; CTA visuel uniquement en MVP lecture.
 
@@ -27,47 +30,32 @@ export function SparkAChangeHero({
       className={clsx(
         'relative overflow-hidden isolate',
         'bg-spark-gradient text-white',
-        'rounded-xl p-6 md:p-10',
-        'shadow-primary-glow',
+        'rounded-xl shadow-primary-glow',
+        // Grid : 1 col mobile, 12 cols desktop (contenu + visuel)
+        'grid grid-cols-1 lg:grid-cols-12 items-center gap-6',
+        'p-6 sm:p-8 lg:p-12',
         className,
       )}
     >
-      {/* Décor sparkles, visible md+ */}
-      <Sparkles
-        className="hidden md:block absolute -right-6 -top-6 w-40 h-40 text-white/15 rotate-12 pointer-events-none"
-        strokeWidth={1.2}
-        aria-hidden="true"
-      />
-      <Sparkles
-        className="hidden md:block absolute right-16 bottom-6 w-16 h-16 text-white/20 pointer-events-none"
-        strokeWidth={1.6}
-        aria-hidden="true"
-      />
-
-      {/* Container interne : block + max-w pour limiter la largeur de
-          la colonne de texte, sans utiliser flex (eviter tout
-          flex-shrink intempestif qui squeezerait le <p>). */}
-      <div className="relative max-w-2xl">
-        <h1 className="font-display text-4xl md:text-5xl font-bold leading-tight">
+      {/* Colonne contenu — ~7/12 desktop */}
+      <div className="lg:col-span-7 flex flex-col gap-5 lg:gap-6">
+        <h1 className="font-display font-bold leading-[1.05] text-4xl sm:text-5xl lg:text-6xl">
           {title}
         </h1>
 
-        {/* Sous-titre : block explicit + classes Tailwind standard
-            (text-base/text-lg) pour eviter tout probleme de tokens
-            custom. w-full force l'occupation horizontale jusqu'au
-            max-w-xl, evitant un wrap mot-par-mot involontaire. */}
-        <p className="block w-full max-w-xl mt-4 md:mt-6 text-base md:text-lg leading-relaxed text-white/85">
+        {/* Sous-titre : measure de lecture confortable (~52ch) */}
+        <p className="text-base sm:text-lg leading-relaxed text-white/85 max-w-[52ch]">
           {subtitle}
         </p>
 
-        <div className="mt-6 md:mt-8">
+        <div>
           <button
             type="button"
             className={clsx(
               'inline-flex items-center gap-2',
               'px-6 py-3 rounded-full',
               'bg-white text-[#3323cc]',
-              'text-sm md:text-base font-semibold',
+              'text-sm sm:text-base font-semibold',
               'shadow-soft-lg hover:shadow-primary-glow-lg',
               'transition-shadow active:translate-y-px',
             )}
@@ -77,6 +65,36 @@ export function SparkAChangeHero({
           </button>
         </div>
       </div>
+
+      {/* Colonne visuelle — desktop only, ~5/12 : halo radial + sparkles */}
+      <div className="hidden lg:flex lg:col-span-5 relative items-center justify-center min-h-[180px]">
+        <div
+          className="absolute inset-0 rounded-full bg-white/10 blur-3xl scale-90"
+          aria-hidden="true"
+        />
+        <Sparkles
+          className="relative w-44 h-44 xl:w-52 xl:h-52 text-white/25 rotate-12"
+          strokeWidth={1}
+          aria-hidden="true"
+        />
+        <Sparkles
+          className="absolute right-2 bottom-2 w-16 h-16 text-white/30"
+          strokeWidth={1.4}
+          aria-hidden="true"
+        />
+        <Sparkles
+          className="absolute left-4 top-6 w-10 h-10 text-white/20"
+          strokeWidth={1.6}
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Décor mobile/tablette : sparkle d'angle, hors flux */}
+      <Sparkles
+        className="lg:hidden absolute -right-4 -top-4 w-24 h-24 text-white/15 rotate-12 pointer-events-none"
+        strokeWidth={1.2}
+        aria-hidden="true"
+      />
     </section>
   );
 }
